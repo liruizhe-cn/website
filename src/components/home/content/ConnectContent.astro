@@ -1,0 +1,85 @@
+---
+import Button from "../../common/Button.astro";
+import { Icon } from "astro-icon/components";
+
+const contactUrl = "/contact";
+---
+
+<h2 slot="title" class="about-title scroll-target-title">Keep in touch</h2>
+
+<div class="about-content scroll-target-content">
+  <p>
+    Thank you for your consideration.
+    I look forward to discussing opportunities where my skills and global perspective can bring value.
+    I welcome the opportunity to connect.
+  </p>
+  <p>
+    Explore my digital footprint to see my work and thinking in action.
+    I welcome you to connect, follow, or engage with me there.
+  </p>
+
+  <div class="connect-icon-links">
+    <a
+      href="mailto:liruizhe01@gmail.com"
+      title="Email"
+      aria-label="Email"
+    >
+      <Icon name="ri:mail-line" size={24} aria-hidden="true" />
+    </a>
+    <a
+      href="https://github.com/liruizhe-cn"
+      target="_blank"
+      rel="noopener noreferrer"
+      title="GitHub Profile"
+      aria-label="GitHub"
+    >
+      <Icon name="ri:github-line" size={22} aria-hidden="true" />
+    </a>
+
+  </div>
+
+  <div class="button-group">
+    <Button
+      class="button"
+      href={contactUrl}
+      text="See All Contact Info"
+      wrapperClass="cta-link"
+    />
+  </div>
+</div>
+
+<style>
+  p {
+    margin-bottom: 1.5rem;
+    line-height: 1.7;
+    color: var(--theme-text);
+  }
+
+  .connect-icon-links {
+    display: flex;
+    align-items: center;
+    gap: 1.8rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .connect-icon-links a {
+    color: var(--theme-icon-color);
+    opacity: 0.8;
+    transition:
+      opacity 0.2s ease,
+      color 0.2s ease;
+    display: inline-block;
+  }
+
+  .connect-icon-links a:hover,
+  .connect-icon-links a:focus {
+    opacity: 1;
+    outline: none;
+  }
+
+  .button-group {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+</style>
