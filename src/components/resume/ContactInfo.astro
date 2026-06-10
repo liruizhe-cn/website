@@ -1,6 +1,6 @@
 ---
-// src/components/resume/ContactInfo.astro
-import { Icon } from "astro-icon/components"; // Import Icon component
+import { Icon } from "astro-icon/components";
+import { resumeData } from "../../data/resumeData";
 ---
 
 <section class="resume-section scroll-reveal-animate">
@@ -8,19 +8,21 @@ import { Icon } from "astro-icon/components"; // Import Icon component
   <ul class="contact-list">
     <li>
       <Icon name="ri:mail-line" class="contact-icon" />
-      <a href="mailto:clium@yahoo.com">clium@yahoo.com</a>
+      <a href={`mailto:${resumeData.contact.email}`}>
+        {resumeData.contact.email}
+      </a>
     </li>
     <li>
       <Icon name="ri:github-line" class="contact-icon" />
       <a
-        href="https://github.com/liruizhe-cn"
+        href={resumeData.contact.githubUrl}
         target="_blank"
-        rel="noopener noreferrer">github.com/liruizhe-cn</a
+        rel="noopener noreferrer">{resumeData.contact.githubLabel}</a
       >
     </li>
     <li>
       <Icon name="ri:wechat-line" class="contact-icon" />
-      <span>calmCalvinium</span>
+      <span>{resumeData.contact.handle}</span>
     </li>
   </ul>
 </section>

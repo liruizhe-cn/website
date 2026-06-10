@@ -1,48 +1,22 @@
 ---
-// No props needed
+import { resumeData } from "../../data/resumeData";
 ---
 
 <section class="resume-section scroll-reveal-animate">
   <h2>Skills</h2>
   <div class="skills-grid">
-    <div class="skill-category">
-      <h3>App Development</h3>
-      <ul>
-        <li>Swift</li>
-        <li>SwiftUI</li>
-        <li>iOS</li>
-        <li>Xcode</li>
-      </ul>
-    </div>
-    <div class="skill-category">
-      <h3>Web & Interface</h3>
-      <ul>
-        <li>JavaScript</li>
-        <li>TypeScript</li>
-        <li>React</li>
-        <li>Next.js</li>
-        <li>Tailwind CSS</li>
-      </ul>
-    </div>
-    <div class="skill-category">
-      <h3>Tools</h3>
-      <ul>
-        <li>Git</li>
-        <li>GitHub</li>
-        <li>Figma</li>
-        <li>Lightroom</li>
-        <li>NX Studio</li>
-      </ul>
-    </div>
-    <div class="skill-category">
-      <h3>AI-assisted Workflow</h3>
-      <ul>
-        <li>ChatGPT</li>
-        <li>Codex</li>
-        <li>Gemini 2.5 Pro</li>
-        <li>DeepSeek</li>
-      </ul>
-    </div>
+    {
+      resumeData.skills.map((skill) => (
+        <div class="skill-category">
+          <h3>{skill.category}</h3>
+          <ul>
+            {skill.items.map((item) => (
+              <li>{item}</li>
+            ))}
+          </ul>
+        </div>
+      ))
+    }
   </div>
 </section>
 

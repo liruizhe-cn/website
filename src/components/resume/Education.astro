@@ -1,28 +1,24 @@
 ---
-// No props needed for now
+import { resumeData } from "../../data/resumeData";
 ---
 
 <section class="resume-section scroll-reveal-animate">
   <h2>Education</h2>
-  <div class="education-entry">
-    <div class="header">
-      <span class="institution">
-        <strong>Nantong University</strong><br />
-        Japanese Major, <em>Undergraduate</em>
-      </span>
-      <span class="date">September 2025 – Present</span>
-    </div>
-  </div>
-
-  <div class="education-entry">
-    <div class="header">
-      <span class="institution">
-        <strong>No.1 Senior High School of Zhongmu County</strong><br />
-        <em>Graduated</em>
-      </span>
-      <span class="date">August 2022 – June 2025</span>
-    </div>
-  </div>
+  {
+    resumeData.education.map((entry) => (
+      <div class="education-entry">
+        <div class="header">
+          <span class="institution">
+            <strong>{entry.institution}</strong>
+            <br />
+            {"detail" in entry && entry.detail ? `${entry.detail}, ` : ""}
+            <em>{entry.status}</em>
+          </span>
+          <span class="date">{entry.date}</span>
+        </div>
+      </div>
+    ))
+  }
 </section>
 
 <style>

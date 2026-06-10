@@ -1,18 +1,10 @@
 ---
-// src/components/resume/Profile.astro
+import { resumeData } from "../../data/resumeData";
 ---
 
 <section class="resume-section scroll-reveal-animate">
   <h2>Profile</h2>
-  <p>
-    A Japanese major student at Nantong University, interested in photography,
-    piano, language learning, and independent app development.
-  </p>
-  <p>
-    I enjoy turning personal observations into small digital products. My
-    current work focuses on creative tools, everyday productivity, and personal
-    reflection through app design.
-  </p>
+  {resumeData.profile.map((paragraph) => <p>{paragraph}</p>)}
 </section>
 
 <style>

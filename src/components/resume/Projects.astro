@@ -1,41 +1,21 @@
 ---
-// No props needed
+import { resumeData } from "../../data/resumeData";
 ---
 
 <section class="resume-section scroll-reveal-animate">
   <h2>App Projects</h2>
-
-  <div class="project-entry">
-    <div class="header">
-      <span class="institution"><strong>Echo</strong></span>
-    </div>
-    <p class="description">
-      A lightweight productivity app focused on helping users restart tasks
-      through quick capture, short attempts, and gentle reflection. It explores
-      how a small app can reduce the friction between intention and action.
-    </p>
-  </div>
-
-  <div class="project-entry">
-    <div class="header">
-      <span class="institution"><strong>Kisp</strong></span>
-    </div>
-    <p class="description">
-      A personal app project currently in development. It focuses on turning
-      small everyday needs into a simple, usable mobile experience.
-    </p>
-  </div>
-
-  <div class="project-entry">
-    <div class="header">
-      <span class="institution"><strong>Lanent</strong></span>
-    </div>
-    <p class="description">
-      A photography-oriented app for recording unfinished visual ideas, missed
-      shots, and future shooting clues. It is designed as a personal map of
-      photographic regrets, inspirations, and recurring visual patterns.
-    </p>
-  </div>
+  {
+    resumeData.projects.map((project) => (
+      <div class="project-entry">
+        <div class="header">
+          <span class="institution">
+            <strong>{project.name}</strong>
+          </span>
+        </div>
+        <p class="description">{project.description}</p>
+      </div>
+    ))
+  }
 </section>
 
 <style>

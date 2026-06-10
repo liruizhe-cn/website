@@ -1,26 +1,22 @@
 ---
-// No props needed
+import { resumeData } from "../../data/resumeData";
 ---
 
 <section class="resume-section scroll-reveal-animate">
   <h2>Experience</h2>
-  <div class="experience-entry">
-    <div class="header">
-      <span class="institution">
-        <strong>Microsoft Windows Insider Program Participant</strong>
-      </span>
-      <span class="date">Nov 2017 – Present</span>
-    </div>
-  </div>
-
-  <div class="experience-entry">
-    <div class="header">
-      <span class="institution">
-        <strong>WeChat Official Account</strong> – Operator
-      </span>
-      <span class="date">May 2020 – Present</span>
-    </div>
-  </div>
+  {
+    resumeData.experience.map((entry) => (
+      <div class="experience-entry">
+        <div class="header">
+          <span class="institution">
+            <strong>{entry.title}</strong>
+            {"role" in entry && entry.role ? ` – ${entry.role}` : ""}
+          </span>
+          <span class="date">{entry.date}</span>
+        </div>
+      </div>
+    ))
+  }
 </section>
 
 <style>
