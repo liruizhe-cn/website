@@ -126,27 +126,6 @@ let initialFilteredEvents = allTimelineEvents.sort((a, b) =>
     timelineContainer.innerHTML = timelineHTML;
 
     timelineContainer.classList.remove("is-updating");
-
-    function reinitFooterAnimation() {
-      document.dispatchEvent(new CustomEvent("refresh-footer-animation"));
-    }
-    if (!timelineContainer.hasAttribute("data-transition-listener-added")) {
-      const handleTransitionEnd = (event) => {
-        if (
-          event.target === timelineContainer &&
-          event.propertyName === "opacity"
-        ) {
-          reinitFooterAnimation();
-          timelineContainer.removeEventListener(
-            "transitionend",
-            handleTransitionEnd
-          );
-          timelineContainer.removeAttribute("data-transition-listener-added");
-        }
-      };
-      timelineContainer.addEventListener("transitionend", handleTransitionEnd);
-      timelineContainer.setAttribute("data-transition-listener-added", "true");
-    }
   }
 
   const handleCategoryClick = async (e) => {

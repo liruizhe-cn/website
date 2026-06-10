@@ -59,6 +59,22 @@ const currentYear = new Date().getFullYear();
     transition:
       background-color 0.3s ease,
       color 0.3s ease;
+    animation: footer-fade-in 0.45s ease-out both;
+  }
+
+  @keyframes footer-fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .site-footer {
+      animation: none;
+    }
   }
 
   .footer-content {
@@ -145,65 +161,6 @@ const currentYear = new Date().getFullYear();
     }
   }
 </style>
-
-<script>
-  import { gsap } from "gsap";
-  import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-  function setupFooterAnimation() {
-    gsap.registerPlugin(ScrollTrigger);
-
-    const footerElement = document.querySelector(".site-footer");
-    const pageWrapper = document.querySelector(".page-wrapper");
-
-    ScrollTrigger.getAll().forEach((trigger) => {
-      if (trigger.trigger === footerElement) {
-        trigger.kill();
-        console.log(
-          "Killed previous footer ScrollTrigger before setup (trigger match)"
-        ); // Debug log
-      }
-    });
-
-    if (footerElement && pageWrapper) {
-      gsap.fromTo(
-        footerElement,
-        { opacity: 0, y: 15 },
-        {
-          opacity: 1,
-          y: 0,
-          ease: "power1.in",
-          scrollTrigger: {
-            trigger: footerElement,
-            scroller: pageWrapper,
-            start: "top 95%",
-            end: "top 40%",
-            scrub: 1,
-          },
-        }
-      );
-      console.log(
-        "Setup new footer ScrollTrigger (using pageWrapper scroller)"
-      );
-    } else {
-      console.warn("Footer animation setup skipped: elements not found.");
-    }
-  }
-
-  // Function to initialize, called on page load
-  function initializeFooter() {
-    setupFooterAnimation();
-  }
-
-  // Listen for a custom event to re-run the setup
-  document.addEventListener("refresh-footer-animation", () => {
-    console.log("Received refresh-footer-animation event, re-running setup...");
-    // Debounce or add checks if necessary, but directly calling setup is okay for now
-    setupFooterAnimation();
-  });
-
-  document.addEventListener("astro:page-load", initializeFooter);
-</script>
 
 <script>
   // Client-side script to mark the active footer link

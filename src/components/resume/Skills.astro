@@ -1,54 +1,22 @@
 ---
-// No props needed
+import { resumeData } from "../../data/resumeData";
 ---
 
 <section class="resume-section scroll-reveal-animate">
   <h2>Skills</h2>
   <div class="skills-grid">
-    <div class="skill-category">
-      <h3>Languages (LEARNING)</h3>
-      <ul>
-        <li>Python</li>
-        <li>JavaScript</li>
-        <li>TypeScript</li>
-        <li>Java</li>
-        <li>SQL</li>
-      </ul>
-    </div>
-    <div class="skill-category">
-      <h3>Tools & DevOps</h3>
-      <ul>
-        <li>Git</li>
-        <li>Docker</li>
-        <li>Linux</li>
-        <li>Azure</li>
-      </ul>
-    </div>
-    <div class="skill-category">
-      <h3>Web Development (LEARNING)</h3>
-      <ul>
-        <li>React</li>
-        <li>Node.js</li>
-        <li>Next.js</li>
-        <li>Tailwind CSS</li>
-      </ul>
-    </div>
-    <div class="skill-category">
-      <h3>Mobile (LEARNING）</h3>
-      <ul>
-        <li>React Native</li>
-        <li>Flutter</li>
-        <li>iOS Development</li>
-      </ul>
-    </div>
-    <div class="skill-category">
-      <h3>AI</h3>
-      <ul>
-        <li>GPT-4</li>
-        <li>Gemini Pro 2.5</li>
-        <li>Deepseek-R3</li>
-      </ul>
-    </div>
+    {
+      resumeData.skills.map((skill) => (
+        <div class="skill-category">
+          <h3>{skill.category}</h3>
+          <ul>
+            {skill.items.map((item) => (
+              <li>{item}</li>
+            ))}
+          </ul>
+        </div>
+      ))
+    }
   </div>
 </section>
 

@@ -1,21 +1,10 @@
 ---
-// src/components/resume/Profile.astro
+import { resumeData } from "../../data/resumeData";
 ---
 
 <section class="resume-section scroll-reveal-animate">
   <h2>Profile</h2>
-  <p>
-    A Japanese major student from Nantong University, <br />
-      featuring <em>creativity</em>, <em>global vision</em> and <em>foresight</em>.
-  </p>
-  <p>
-    I cultivate a diverse range of interests, 
-    including the art of photography, piano, and aeromodelling. 
-    Furthermore, I am a dedicated railway enthusiast.
-  </p>
-  <p>
-    I aspire to become an individual with an interdisciplinary knowledge base, aiming to integrate into our global community through the synergy of linguistic proficiency and professional expertise. It is through a global perspective that I seek to achieve a more accomplished version of myself.
-  </p>
+  {resumeData.profile.map((paragraph) => <p>{paragraph}</p>)}
 </section>
 
 <style>

@@ -1,32 +1,37 @@
 ---
-// No props needed
+import { resumeData } from "../../data/resumeData";
 ---
 
 <section class="resume-section scroll-reveal-animate">
   <h2>Honors & Awards</h2>
-
-  <div class="award-entry">
-    <div class="header">
-      <span class="institution"
-        ><strong>Merit Student for All-Round Excellence</strong></span
-      >
-      <span class="date">2014、2017、2021、2023、2024</span>
-    </div>
-  </div>
-
-  <div class="award-entry">
-    <div class="header">
-      <span class="institution"><strong>Outstanding Student Leader</strong></span>
-      <span class="date">Oct 2024</span>
-    </div>
-  </div>
-
-  <div class="award-entry">
-    <div class="header">
-      <span class="institution">Electronic Keyboard Performance Examination: Level 10</span>
-      <span class="date">Nov 2017</span>
-    </div>
-  </div>
+  {
+    resumeData.awards.map((award) => (
+      <div class="award-entry">
+        <div class="header">
+          <span class="institution">
+            <strong>{award.title}</strong>
+            {"level" in award && award.level && (
+              <span class="award-level">{award.level}</span>
+            )}
+            {"work" in award && award.work && (
+              <span class="award-work">
+                Work:{" "}
+                <a
+                  href={award.work.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {award.work.title}
+                </a>
+              </span>
+            )}
+          </span>
+          <span class="date">{award.date}</span>
+        </div>
+      </div>
+    ))
+  }
+</section>
 
 <style>
   .resume-section {
@@ -55,6 +60,19 @@
   }
   .award-entry .institution {
     margin-right: 1rem;
+  }
+  .award-level,
+  .award-work {
+    display: block;
+    margin-top: 0.2rem;
+    font-size: 1rem;
+  }
+  .award-level {
+    color: var(--text-muted);
+    font-family: var(--font-family-sans);
+  }
+  .award-work a {
+    font-style: italic;
   }
   .award-entry .date {
     font-family: var(--font-family-sans);
