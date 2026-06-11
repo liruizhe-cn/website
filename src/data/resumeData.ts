@@ -2,8 +2,8 @@ export const resumeData = {
   name: "Calvin Lee",
   title: "Japanese Major · Independent App Developer",
   profile: [
-    "A Japanese major student at Nantong University, interested in photography, piano, language learning, and independent app development.",
-    "I enjoy turning personal observations into small digital products. My current work focuses on creative tools, everyday productivity, and personal reflection through app design.",
+    "A Japanese major student at Nantong University, working across photography, language learning, piano, and independent app development.",
+    "I often begin with everyday observations and turn them into visual records, written materials, and small digital products. My current work connects creative practice with thoughtful, usable app design.",
   ],
   education: [
     {
@@ -68,7 +68,7 @@ export const resumeData = {
     {
       name: "Kisp",
       description:
-        "A personal app project currently in development. It focuses on turning small everyday needs into a simple, usable mobile experience.",
+        "A personal app project currently in development, focused on small everyday interactions and lightweight mobile tools. It is an experiment in turning simple needs into a clean and usable app experience.",
     },
     {
       name: "Latent",
@@ -78,12 +78,37 @@ export const resumeData = {
   ],
   skills: [
     {
+      category: "Creative Direction",
+      items: [
+        "Photography",
+        "Visual Observation",
+        "Layout",
+        "Writing",
+        "Storytelling",
+      ],
+    },
+    {
       category: "App Development",
       items: ["Swift", "SwiftUI", "iOS", "Xcode"],
     },
     {
-      category: "Tools",
-      items: ["Git", "GitHub", "Figma", "Lightroom", "NX Studio"],
+      category: "Design & Production",
+      items: [
+        "Figma",
+        "Lightroom",
+        "NX Studio",
+        "Video Scripting",
+        "Presentation Design",
+      ],
+    },
+    {
+      category: "Language & Communication",
+      items: [
+        "Japanese Learning",
+        "English Communication",
+        "Translation",
+        "Subtitles",
+      ],
     },
     {
       category: "AI-assisted Workflow",

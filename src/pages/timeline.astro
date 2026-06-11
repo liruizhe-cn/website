@@ -207,9 +207,7 @@ let initialFilteredEvents = allTimelineEvents.sort((a, b) =>
     setupEventListeners();
   }
 
-  document.addEventListener("astro:page-load", () => {
-    initializeTimeline();
-  });
+  initializeTimeline();
 </script>
 
 <style>

@@ -1,148 +1,176 @@
 <div
   id="dynamic-background-container"
   aria-hidden="true"
-  transition:persist={true}
 >
-  <div class="background-wash"></div>
-  <div class="background-orb orb-one"></div>
-  <div class="background-orb orb-two"></div>
-  <div class="background-orb orb-three"></div>
+  <div class="aurora-field"></div>
+  <div class="aurora aurora-mint"></div>
+  <div class="aurora aurora-violet"></div>
+  <div class="aurora aurora-gold"></div>
 </div>
 
 <style>
   #dynamic-background-container {
     position: fixed;
-    inset: -16vmax;
+    inset: -10vmax;
     z-index: -1;
     overflow: hidden;
     opacity: var(--dynamic-bg-opacity);
     contain: strict;
     pointer-events: none;
     transform: translateZ(0);
+    background: var(--bg-color);
   }
 
-  .background-wash,
-  .background-orb {
+  .aurora-field,
+  .aurora {
     position: absolute;
     will-change: transform;
     transform: translateZ(0);
   }
 
-  .background-wash {
-    inset: 0;
+  .aurora-field {
+    inset: -18%;
     background:
-      radial-gradient(
-        circle at 15% 25%,
-        rgba(103, 211, 150, 0.8),
-        transparent 34%
-      ),
-      radial-gradient(
-        circle at 78% 20%,
-        rgba(78, 193, 220, 0.72),
-        transparent 36%
-      ),
-      radial-gradient(
-        circle at 55% 82%,
-        rgba(230, 190, 72, 0.68),
-        transparent 38%
+      radial-gradient(circle at 48% 38%, rgb(var(--aurora-b) / 0.86), transparent 44%),
+      radial-gradient(circle at 58% 68%, rgb(var(--aurora-a) / 0.76), transparent 46%),
+      conic-gradient(
+        from 25deg at 50% 50%,
+        rgb(var(--aurora-a) / 0.74),
+        rgb(var(--aurora-b-soft) / 0.8),
+        rgb(var(--aurora-b) / 0.76),
+        rgb(var(--aurora-accent) / 0.42),
+        rgb(var(--aurora-a) / 0.74)
       );
-    filter: blur(11vmax) saturate(118%);
-    animation: wash-drift 24s ease-in-out infinite alternate;
+    filter: blur(10vmax) saturate(114%);
+    opacity: 0.72;
+    animation: field-flow 18s ease-in-out infinite alternate;
   }
 
-  .background-orb {
-    width: 58vmax;
-    height: 58vmax;
-    border-radius: 50%;
-    filter: blur(8vmax);
-    opacity: 0.56;
+  .aurora {
+    width: 64vmax;
+    height: 52vmax;
+    border-radius: 44% 56% 62% 38%;
+    filter: blur(8vmax) saturate(118%);
+    opacity: 0.7;
     mix-blend-mode: screen;
   }
 
-  .orb-one {
-    top: 2%;
-    left: 4%;
-    background: #34c875;
-    animation: orb-one-drift 28s ease-in-out infinite alternate;
+  .aurora-mint {
+    top: -8%;
+    left: -4%;
+    background: radial-gradient(
+      ellipse at center,
+      rgb(var(--aurora-a)) 0%,
+      rgb(var(--aurora-a-soft)) 44%,
+      transparent 73%
+    );
+    animation: drift-mint 16s ease-in-out infinite alternate;
   }
 
-  .orb-two {
-    top: 8%;
-    right: 0;
-    background: #22a8ca;
-    animation: orb-two-drift 31s ease-in-out infinite alternate;
+  .aurora-violet {
+    top: -2%;
+    right: -8%;
+    background: radial-gradient(
+      ellipse at center,
+      rgb(var(--aurora-b)) 0%,
+      rgb(var(--aurora-b-soft)) 46%,
+      transparent 74%
+    );
+    animation: drift-violet 19s ease-in-out infinite alternate;
   }
 
-  .orb-three {
-    right: 18%;
-    bottom: 0;
-    background: #e0bb36;
-    animation: orb-three-drift 34s ease-in-out infinite alternate;
+  .aurora-gold {
+    right: 8%;
+    bottom: -12%;
+    width: 48vmax;
+    height: 42vmax;
+    background: radial-gradient(
+      ellipse at center,
+      rgb(var(--aurora-accent)) 0%,
+      rgb(var(--aurora-accent) / 0.62) 42%,
+      transparent 72%
+    );
+    opacity: 0.34;
+    animation: drift-gold 22s ease-in-out infinite alternate;
   }
 
-  @keyframes wash-drift {
+  @keyframes field-flow {
     from {
-      transform: translate3d(-2%, -1%, 0) scale(1);
+      transform: translate3d(-4%, -3%, 0) rotate(-5deg) scale(1);
     }
     to {
-      transform: translate3d(3%, 2%, 0) scale(1.06);
+      transform: translate3d(5%, 4%, 0) rotate(7deg) scale(1.16);
     }
   }
 
-  @keyframes orb-one-drift {
+  @keyframes drift-mint {
     from {
-      transform: translate3d(-4%, -2%, 0) scale(0.92);
+      transform: translate3d(-12%, -8%, 0) rotate(-8deg) scale(0.92);
     }
     to {
-      transform: translate3d(18%, 12%, 0) scale(1.08);
+      transform: translate3d(24%, 18%, 0) rotate(14deg) scale(1.14);
     }
   }
 
-  @keyframes orb-two-drift {
+  @keyframes drift-violet {
     from {
-      transform: translate3d(8%, -8%, 0) scale(1.04);
+      transform: translate3d(14%, -10%, 0) rotate(12deg) scale(1.08);
     }
     to {
-      transform: translate3d(-14%, 14%, 0) scale(0.9);
+      transform: translate3d(-24%, 20%, 0) rotate(-14deg) scale(0.9);
     }
   }
 
-  @keyframes orb-three-drift {
+  @keyframes drift-gold {
     from {
-      transform: translate3d(-8%, 10%, 0) scale(0.94);
+      transform: translate3d(12%, 18%, 0) rotate(-10deg) scale(0.9);
     }
     to {
-      transform: translate3d(12%, -12%, 0) scale(1.08);
+      transform: translate3d(-22%, -22%, 0) rotate(12deg) scale(1.12);
     }
   }
 
   @media (max-width: 767px) {
     #dynamic-background-container {
-      inset: -24vmax;
+      inset: -18vmax;
     }
 
-    .background-wash {
-      filter: blur(14vmax) saturate(110%);
-      animation-duration: 34s;
+    .aurora {
+      width: 76vmax;
+      height: 62vmax;
+      filter: blur(11vmax) saturate(114%);
+      opacity: 0.64;
+      animation-duration: 26s;
     }
 
-    .background-orb {
-      width: 68vmax;
-      height: 68vmax;
-      filter: blur(12vmax);
-      opacity: 0.42;
-      animation-duration: 40s;
+    .aurora-field {
+      inset: -26%;
+      filter: blur(13vmax) saturate(112%);
+      animation-duration: 22s;
     }
 
-    .orb-three {
-      display: none;
-    }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .background-wash,
-    .background-orb {
+    .aurora-field,
+    .aurora {
       animation: none;
+    }
+
+    .aurora-field {
+      transform: scale(1.08);
+    }
+
+    .aurora-mint {
+      transform: translate3d(2%, 2%, 0) scale(1);
+    }
+
+    .aurora-violet {
+      transform: translate3d(-4%, 4%, 0) scale(1);
+    }
+
+    .aurora-gold {
+      transform: translate3d(-2%, -4%, 0) scale(1);
     }
   }
 </style>

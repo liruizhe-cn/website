@@ -6,27 +6,36 @@ import { Icon } from "astro-icon/components";
 <SubPageLayout title="Contact">
   <div class="contact-content">
     <p class="intro-text">Feel free to reach out!</p>
-    <p class="intro-text">Here's some description about how to contact me.</p>
+    <p class="intro-text">
+      Here are the main ways to reach me or find my work.
+    </p>
 
     <h3 class="contact-section-title">Contact Information</h3>
-    <p class="section-description">Make the world a better place together.</p>
+    <p class="section-description">
+      Feel free to reach out about projects, photography, language learning, or
+      collaboration ideas.
+    </p>
     <ul class="contact-list">
       <li>
         <Icon name="ri:mail-line" class="contact-icon" />
-        <a href="javascript:alert('Send me an email.')">clium@yahoo.com</a>
+        <a href="mailto:clium@yahoo.com">clium@yahoo.com</a>
       </li>
       <li>
         <Icon name="ri:github-line" class="contact-icon" />
-        <a href="javascript:alert('Reach me on Github')">github.com/liruizhe-cn</a>
+        <a
+          href="https://github.com/liruizhe-cn"
+          target="_blank"
+          rel="noopener noreferrer">github.com/liruizhe-cn</a
+        >
       </li>
       <li>
         <Icon name="ri:planet-line" class="contact-icon" />
-        <a href="javascript:alert('Watch out!')">liruizhe.cn</a>
+        <a href="https://liruizhe.cn">liruizhe.cn</a>
       </li>
-          <li>
-      <Icon name="ri:wechat-line" class="contact-icon" />
-      <span>calmCalvinium</span>
-    </li>
+      <li>
+        <Icon name="ri:wechat-line" class="contact-icon" />
+        <span>calmCalvinium</span>
+      </li>
     </ul>
   </div>
 </SubPageLayout>
