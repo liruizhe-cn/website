@@ -62,29 +62,3 @@
     opacity: 0.6;
   }
 </style>
-
-<script>
-  const indicator = document.querySelector(
-    "#scroll-indicator"
-  ) as HTMLElement | null;
-  const pageWrapper = document.querySelector(
-    ".page-wrapper"
-  ) as HTMLElement | null;
-
-  if (indicator && pageWrapper) {
-    const updateVisibility = () => {
-      indicator.classList.toggle("visible", pageWrapper.scrollTop < 10);
-    };
-
-    const revealTimer = window.setTimeout(updateVisibility, 1400);
-    pageWrapper.addEventListener("scroll", updateVisibility, { passive: true });
-
-    indicator.addEventListener("click", () => {
-      window.clearTimeout(revealTimer);
-      pageWrapper.scrollTo({
-        top: pageWrapper.scrollTop + pageWrapper.clientHeight,
-        behavior: "smooth",
-      });
-    });
-  }
-</script>

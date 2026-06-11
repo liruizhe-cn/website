@@ -46,27 +46,6 @@ function slugify(text: string): string {
   </div>
 </SubPageLayout>
 
-<script>
-  const params = new URLSearchParams(window.location.search);
-  const targetId = params.get("scrollTo");
-  const pageWrapper = document.querySelector(
-    ".page-wrapper"
-  ) as HTMLElement | null;
-
-  if (targetId && pageWrapper) {
-    const targetElement = document.getElementById(targetId);
-    if (targetElement) {
-      requestAnimationFrame(() => {
-        pageWrapper.scrollTo({
-          top: targetElement.offsetTop,
-          behavior: "smooth",
-        });
-        history.replaceState(null, "", window.location.pathname);
-      });
-    }
-  }
-</script>
-
 <style>
   .page-intro {
     font-size: 1.2rem;

@@ -124,6 +124,6 @@ export const resumeData = {
     email: "clium@yahoo.com",
     githubLabel: "github.com/liruizhe-cn",
     githubUrl: "https://github.com/liruizhe-cn",
-    handle: "calmCalvinium",
+    wechat: "calmCalvinium",
   },
 } as const;

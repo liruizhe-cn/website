@@ -54,6 +54,7 @@ let initialFilteredEvents = allTimelineEvents.sort((a, b) =>
 </SubPageLayout>
 
 <script define:vars={{ allEvents }}>
+  (() => {
   let currentFilter = "all";
   let currentSort = "newest";
 
@@ -208,6 +209,7 @@ let initialFilteredEvents = allTimelineEvents.sort((a, b) =>
   }
 
   initializeTimeline();
+  })();
 </script>
 
 <style>
