@@ -1,7 +1,6 @@
 ---
-import "@fontsource-variable/eb-garamond";
-import "@fontsource-variable/eb-garamond/wght-italic.css";
-import "@fontsource-variable/inter";
+import { ClientRouter } from "astro:transitions";
+import "../styles/fonts.css";
 import DynamicBackground from "../components/DynamicBackground.astro";
 import ScrollIndicator from "../components/ScrollIndicator.astro";
 import Footer from "../components/Footer.astro";
@@ -20,16 +19,48 @@ const showScrollIndicator =
   showIndicatorOverride !== undefined
     ? showIndicatorOverride
     : shouldShowBasedOnPath;
+
+const pageTransition = {
+  forwards: {
+    old: {
+      name: "page-out",
+      duration: "180ms",
+      easing: "cubic-bezier(0.4, 0, 1, 1)",
+      fillMode: "both",
+    },
+    new: {
+      name: "page-in",
+      duration: "220ms",
+      easing: "cubic-bezier(0.16, 1, 0.3, 1)",
+      fillMode: "both",
+    },
+  },
+  backwards: {
+    old: {
+      name: "page-out",
+      duration: "180ms",
+      easing: "cubic-bezier(0.4, 0, 1, 1)",
+      fillMode: "both",
+    },
+    new: {
+      name: "page-in",
+      duration: "220ms",
+      easing: "cubic-bezier(0.16, 1, 0.3, 1)",
+      fillMode: "both",
+    },
+  },
+} as const;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" transition:animate="none">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <meta name="generator" content={Astro.generator} />
     <title>{pageTitle}</title>
+    <ClientRouter />
     <script is:inline>
       const isDarkMode =
         window.matchMedia &&
@@ -40,38 +71,29 @@ const showScrollIndicator =
         document.documentElement.classList.remove("dark");
       }
 
-      const paletteCount = 5;
-      let previousPalette = -1;
-      try {
-        previousPalette = Number(
-          window.sessionStorage.getItem("calvin-background-palette")
-        );
-      } catch {
-        previousPalette = -1;
+      if (!window.__calvinPalette) {
+        const palettes = ["verdigris", "lapis", "moss", "slate"];
+        let previous = "";
+        try {
+          previous =
+            window.sessionStorage.getItem("calvin-background-palette") || "";
+        } catch {}
+
+        const choices = palettes.filter((palette) => palette !== previous);
+        const randomValue = window.crypto?.getRandomValues
+          ? window.crypto.getRandomValues(new Uint32Array(1))[0]
+          : Math.floor(Math.random() * 2 ** 32);
+        window.__calvinPalette = choices[randomValue % choices.length];
+
+        try {
+          window.sessionStorage.setItem(
+            "calvin-background-palette",
+            window.__calvinPalette
+          );
+        } catch {}
       }
 
-      const randomValue = window.crypto?.getRandomValues
-        ? window.crypto.getRandomValues(new Uint32Array(1))[0]
-        : Math.floor(Math.random() * 2 ** 32);
-      let nextPalette = randomValue % paletteCount;
-      if (
-        Number.isInteger(previousPalette) &&
-        previousPalette >= 0 &&
-        previousPalette < paletteCount &&
-        nextPalette === previousPalette
-      ) {
-        nextPalette = (nextPalette + 1) % paletteCount;
-      }
-
-      document.documentElement.dataset.palette = String(nextPalette);
-      try {
-        window.sessionStorage.setItem(
-          "calvin-background-palette",
-          String(nextPalette)
-        );
-      } catch {
-        // The selected palette still applies when storage is unavailable.
-      }
+      document.documentElement.dataset.palette = window.__calvinPalette;
     </script>
     <style>
       :root {
@@ -88,12 +110,7 @@ const showScrollIndicator =
         --footer-link: #384044;
         --footer-link-hover: #212529;
         --footer-copyright: #6c757d;
-        --dynamic-bg-opacity: 0.46;
-        --aurora-a: 38 157 126;
-        --aurora-a-soft: 57 172 157;
-        --aurora-b: 54 104 174;
-        --aurora-b-soft: 72 122 188;
-        --aurora-accent: 190 143 72;
+        --dynamic-bg-opacity: 0.48;
 
         --button-hover-bg: #55555516;
         --button-hover-text: #121212;
@@ -126,12 +143,7 @@ const showScrollIndicator =
         --footer-link: #cccccc;
         --footer-link-hover: #ffffff;
         --footer-copyright: #888888;
-        --dynamic-bg-opacity: 0.64;
-        --aurora-a: 47 195 146;
-        --aurora-a-soft: 67 185 181;
-        --aurora-b: 59 117 189;
-        --aurora-b-soft: 77 93 166;
-        --aurora-accent: 216 174 98;
+        --dynamic-bg-opacity: 0.62;
 
         --button-hover-bg: #cccccc26;
         --button-hover-text: #fff;
@@ -143,70 +155,6 @@ const showScrollIndicator =
         --timeline-marker-border-color: #cccccc;
         --timeline-marker-bg-color: #cccccc;
         --timeline-line-color: #cccccc33;
-      }
-
-      :root[data-palette="1"] {
-        --aurora-a: 58 99 166;
-        --aurora-a-soft: 74 118 175;
-        --aurora-b: 101 76 151;
-        --aurora-b-soft: 126 93 157;
-        --aurora-accent: 184 116 78;
-      }
-
-      html.dark[data-palette="1"] {
-        --aurora-a: 76 126 203;
-        --aurora-a-soft: 92 145 211;
-        --aurora-b: 126 97 190;
-        --aurora-b-soft: 151 113 191;
-        --aurora-accent: 210 143 94;
-      }
-
-      :root[data-palette="2"] {
-        --aurora-a: 61 139 108;
-        --aurora-a-soft: 73 153 137;
-        --aurora-b: 46 122 137;
-        --aurora-b-soft: 61 139 151;
-        --aurora-accent: 180 132 88;
-      }
-
-      html.dark[data-palette="2"] {
-        --aurora-a: 77 176 132;
-        --aurora-a-soft: 91 188 166;
-        --aurora-b: 61 157 174;
-        --aurora-b-soft: 78 172 183;
-        --aurora-accent: 207 158 103;
-      }
-
-      :root[data-palette="3"] {
-        --aurora-a: 45 131 154;
-        --aurora-a-soft: 62 150 168;
-        --aurora-b: 50 86 157;
-        --aurora-b-soft: 69 105 173;
-        --aurora-accent: 184 102 85;
-      }
-
-      html.dark[data-palette="3"] {
-        --aurora-a: 61 166 184;
-        --aurora-a-soft: 79 182 195;
-        --aurora-b: 65 103 174;
-        --aurora-b-soft: 82 122 191;
-        --aurora-accent: 210 126 105;
-      }
-
-      :root[data-palette="4"] {
-        --aurora-a: 57 78 143;
-        --aurora-a-soft: 73 98 157;
-        --aurora-b: 70 116 154;
-        --aurora-b-soft: 86 134 166;
-        --aurora-accent: 186 133 61;
-      }
-
-      html.dark[data-palette="4"] {
-        --aurora-a: 82 93 160;
-        --aurora-a-soft: 101 111 179;
-        --aurora-b: 92 137 176;
-        --aurora-b-soft: 108 155 190;
-        --aurora-accent: 208 157 78;
       }
 
       html {
@@ -278,6 +226,20 @@ const showScrollIndicator =
         }
       }
 
+      @keyframes page-in {
+        from {
+          opacity: 0;
+          transform: translateY(8px);
+        }
+      }
+
+      @keyframes page-out {
+        to {
+          opacity: 0;
+          transform: translateY(-6px);
+        }
+      }
+
       a {
         color: var(--text-color);
         text-decoration: underline;
@@ -295,32 +257,6 @@ const showScrollIndicator =
     </style>
 
     <script>
-      const pageWrapper = document.querySelector(".page-wrapper");
-      const elementsToObserve = document.querySelectorAll(
-        ".scroll-reveal-animate"
-      );
-
-      if (pageWrapper && elementsToObserve.length > 0) {
-        const observer = new IntersectionObserver(
-          (entries, currentObserver) => {
-            entries.forEach((entry) => {
-              if (entry.isIntersecting) {
-                entry.target.classList.add("visible");
-                currentObserver.unobserve(entry.target);
-              }
-            });
-          },
-          {
-            root: pageWrapper,
-            rootMargin: "0px 0px -8% 0px",
-            threshold: 0.12,
-          }
-        );
-
-        elementsToObserve.forEach((element) => observer.observe(element));
-      }
-    </script>
-    <script>
       const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
 
       const checkAndApplyTheme = () => {
@@ -333,18 +269,129 @@ const showScrollIndicator =
 
       mediaQuery.addEventListener("change", checkAndApplyTheme);
 
-      checkAndApplyTheme();
+      let pageController: AbortController | null = null;
+      let pageObserver: IntersectionObserver | null = null;
+
+      document.addEventListener("astro:before-swap", (event) => {
+        if (window.__calvinPalette) {
+          event.newDocument.documentElement.dataset.palette =
+            window.__calvinPalette;
+        }
+      });
+
+      function initializePage() {
+        pageController?.abort();
+        pageObserver?.disconnect();
+        pageController = new AbortController();
+        const { signal } = pageController;
+
+        checkAndApplyTheme();
+        if (window.__calvinPalette) {
+          document.documentElement.dataset.palette = window.__calvinPalette;
+        }
+
+        const pageWrapper = document.querySelector(
+          ".page-wrapper"
+        ) as HTMLElement | null;
+        if (!pageWrapper) return;
+
+        const revealTargets = document.querySelectorAll(
+          ".scroll-reveal-animate, .project-card"
+        );
+        pageObserver = new IntersectionObserver(
+          (entries, observer) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("visible");
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          {
+            root: pageWrapper,
+            rootMargin: "0px 0px -8% 0px",
+            threshold: 0.12,
+          }
+        );
+        revealTargets.forEach((target) => pageObserver?.observe(target));
+
+        const indicator = document.querySelector(
+          "#scroll-indicator"
+        ) as HTMLElement | null;
+        if (indicator) {
+          const updateIndicator = () => {
+            indicator.classList.toggle("visible", pageWrapper.scrollTop < 10);
+          };
+          const revealTimer = window.setTimeout(updateIndicator, 1400);
+          signal.addEventListener("abort", () => clearTimeout(revealTimer), {
+            once: true,
+          });
+          pageWrapper.addEventListener("scroll", updateIndicator, {
+            passive: true,
+            signal,
+          });
+          indicator.addEventListener(
+            "click",
+            () => {
+              clearTimeout(revealTimer);
+              pageWrapper.scrollTo({
+                top: pageWrapper.scrollTop + pageWrapper.clientHeight,
+                behavior: "smooth",
+              });
+            },
+            { signal }
+          );
+        }
+
+        const currentPath = window.location.pathname;
+        document
+          .querySelectorAll(".footer-column-2 li")
+          .forEach((item) => {
+            const link = item.querySelector("a");
+            if (!link) return;
+            const href = new URL(link.href).pathname;
+            item.classList.toggle(
+              "active",
+              href === currentPath ||
+                (href === "/" && currentPath === "/index.html")
+            );
+          });
+
+        const targetId = new URLSearchParams(window.location.search).get(
+          "scrollTo"
+        );
+        if (targetId) {
+          const target = document.getElementById(targetId);
+          if (target) {
+            requestAnimationFrame(() => {
+              pageWrapper.scrollTo({
+                top: target.offsetTop,
+                behavior: "smooth",
+              });
+              history.replaceState(null, "", window.location.pathname);
+            });
+          }
+        }
+      }
+
+      document.addEventListener("astro:page-load", initializePage);
     </script>
   </head>
   <body>
     <div class="page-wrapper">
       <DynamicBackground />
-      <main class="main-content">
-        <slot />
-      </main>
-      <div class="some-empty-space" style="height: 20vh;"></div>
-      <Footer />
-      {showScrollIndicator && <ScrollIndicator />}
+      <div
+        class="page-foreground"
+        transition:name="page-foreground"
+        transition:animate={pageTransition}
+      >
+        <main class="main-content">
+          <slot />
+        </main>
+        <div class="some-empty-space" style="height: 20vh;"></div>
+        <Footer />
+        {showScrollIndicator && <ScrollIndicator />}
+      </div>
     </div>
   </body>
 </html>

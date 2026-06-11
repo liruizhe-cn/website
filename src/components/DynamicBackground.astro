@@ -1,6 +1,7 @@
 <div
   id="dynamic-background-container"
   aria-hidden="true"
+  transition:persist="ambient-background"
 >
   <div class="aurora-field"></div>
   <div class="aurora aurora-mint"></div>
@@ -9,16 +10,80 @@
 </div>
 
 <style>
+  :global(:root) {
+    --aurora-surface: oklch(0.96 0.012 165);
+    --aurora-primary: oklch(0.63 0.075 166);
+    --aurora-secondary: oklch(0.5 0.055 247);
+    --aurora-accent: oklch(0.68 0.07 82);
+  }
+
+  :global(html.dark) {
+    --aurora-surface: oklch(0.2 0.018 190);
+    --aurora-primary: oklch(0.69 0.085 166);
+    --aurora-secondary: oklch(0.6 0.075 247);
+    --aurora-accent: oklch(0.72 0.08 82);
+  }
+
+  :global(:root[data-palette="lapis"]) {
+    --aurora-surface: oklch(0.96 0.012 275);
+    --aurora-primary: oklch(0.58 0.08 264);
+    --aurora-secondary: oklch(0.55 0.07 313);
+    --aurora-accent: oklch(0.65 0.075 48);
+  }
+
+  :global(html.dark[data-palette="lapis"]) {
+    --aurora-surface: oklch(0.2 0.02 275);
+    --aurora-primary: oklch(0.67 0.09 264);
+    --aurora-secondary: oklch(0.64 0.08 313);
+    --aurora-accent: oklch(0.7 0.085 48);
+  }
+
+  :global(:root[data-palette="moss"]) {
+    --aurora-surface: oklch(0.96 0.014 145);
+    --aurora-primary: oklch(0.59 0.07 142);
+    --aurora-secondary: oklch(0.49 0.055 205);
+    --aurora-accent: oklch(0.68 0.075 91);
+  }
+
+  :global(html.dark[data-palette="moss"]) {
+    --aurora-surface: oklch(0.2 0.018 155);
+    --aurora-primary: oklch(0.66 0.08 142);
+    --aurora-secondary: oklch(0.59 0.065 205);
+    --aurora-accent: oklch(0.72 0.08 91);
+  }
+
+  :global(:root[data-palette="slate"]) {
+    --aurora-surface: oklch(0.96 0.01 260);
+    --aurora-primary: oklch(0.52 0.055 248);
+    --aurora-secondary: oklch(0.49 0.065 326);
+    --aurora-accent: oklch(0.67 0.075 28);
+  }
+
+  :global(html.dark[data-palette="slate"]) {
+    --aurora-surface: oklch(0.19 0.018 260);
+    --aurora-primary: oklch(0.62 0.07 248);
+    --aurora-secondary: oklch(0.59 0.075 326);
+    --aurora-accent: oklch(0.71 0.085 28);
+  }
+
   #dynamic-background-container {
     position: fixed;
     inset: -10vmax;
     z-index: -1;
     overflow: hidden;
-    opacity: var(--dynamic-bg-opacity);
+    opacity: 0;
     contain: strict;
     pointer-events: none;
-    transform: translateZ(0);
-    background: var(--bg-color);
+    transform: translateZ(0) scale(1.025);
+    background: var(--aurora-surface);
+    transition:
+      opacity 1.05s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 1.05s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  #dynamic-background-container.is-ready {
+    opacity: var(--dynamic-bg-opacity);
+    transform: translateZ(0) scale(1);
   }
 
   .aurora-field,
@@ -31,18 +96,18 @@
   .aurora-field {
     inset: -18%;
     background:
-      radial-gradient(circle at 48% 38%, rgb(var(--aurora-b) / 0.86), transparent 44%),
-      radial-gradient(circle at 58% 68%, rgb(var(--aurora-a) / 0.76), transparent 46%),
+      radial-gradient(circle at 48% 38%, var(--aurora-secondary), transparent 46%),
+      radial-gradient(circle at 58% 68%, var(--aurora-primary), transparent 48%),
       conic-gradient(
         from 25deg at 50% 50%,
-        rgb(var(--aurora-a) / 0.74),
-        rgb(var(--aurora-b-soft) / 0.8),
-        rgb(var(--aurora-b) / 0.76),
-        rgb(var(--aurora-accent) / 0.42),
-        rgb(var(--aurora-a) / 0.74)
+        color-mix(in oklch, var(--aurora-primary) 76%, transparent),
+        color-mix(in oklch, var(--aurora-secondary) 82%, transparent),
+        color-mix(in oklch, var(--aurora-secondary) 70%, var(--aurora-surface)),
+        color-mix(in oklch, var(--aurora-accent) 38%, transparent),
+        color-mix(in oklch, var(--aurora-primary) 76%, transparent)
       );
-    filter: blur(10vmax) saturate(114%);
-    opacity: 0.72;
+    filter: blur(10vmax);
+    opacity: 0.68;
     animation: field-flow 18s ease-in-out infinite alternate;
   }
 
@@ -60,8 +125,8 @@
     left: -4%;
     background: radial-gradient(
       ellipse at center,
-      rgb(var(--aurora-a)) 0%,
-      rgb(var(--aurora-a-soft)) 44%,
+      var(--aurora-primary) 0%,
+      color-mix(in oklch, var(--aurora-primary) 66%, var(--aurora-surface)) 46%,
       transparent 73%
     );
     animation: drift-mint 16s ease-in-out infinite alternate;
@@ -72,8 +137,8 @@
     right: -8%;
     background: radial-gradient(
       ellipse at center,
-      rgb(var(--aurora-b)) 0%,
-      rgb(var(--aurora-b-soft)) 46%,
+      var(--aurora-secondary) 0%,
+      color-mix(in oklch, var(--aurora-secondary) 66%, var(--aurora-surface)) 48%,
       transparent 74%
     );
     animation: drift-violet 19s ease-in-out infinite alternate;
@@ -86,8 +151,8 @@
     height: 42vmax;
     background: radial-gradient(
       ellipse at center,
-      rgb(var(--aurora-accent)) 0%,
-      rgb(var(--aurora-accent) / 0.62) 42%,
+      var(--aurora-accent) 0%,
+      color-mix(in oklch, var(--aurora-accent) 54%, transparent) 42%,
       transparent 72%
     );
     opacity: 0.34;
@@ -149,9 +214,17 @@
       animation-duration: 22s;
     }
 
+    .aurora-gold {
+      display: none;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
+    #dynamic-background-container {
+      transform: translateZ(0);
+      transition-duration: 180ms;
+    }
+
     .aurora-field,
     .aurora {
       animation: none;
@@ -174,3 +247,15 @@
     }
   }
 </style>
+
+<script>
+  const background = document.querySelector(
+    "#dynamic-background-container"
+  ) as HTMLElement | null;
+
+  if (background && !background.classList.contains("is-ready")) {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => background.classList.add("is-ready"));
+    });
+  }
+</script>

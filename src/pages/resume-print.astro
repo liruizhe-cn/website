@@ -1,7 +1,5 @@
 ---
-import "@fontsource-variable/eb-garamond";
-import "@fontsource-variable/eb-garamond/wght-italic.css";
-import "@fontsource-variable/inter";
+import "../styles/fonts.css";
 import { resumeData } from "../data/resumeData";
 ---
 
@@ -29,7 +27,7 @@ import { resumeData } from "../data/resumeData";
             <a href={resumeData.contact.githubUrl}>
               {resumeData.contact.githubLabel}
             </a>
-            <span>{resumeData.contact.handle}</span>
+            <span>{resumeData.contact.wechat}</span>
           </div>
         </header>
 
@@ -151,8 +149,8 @@ import { resumeData } from "../data/resumeData";
               </a>
             </div>
             <div>
-              <span>Handle</span>
-              <strong>{resumeData.contact.handle}</strong>
+              <span>WeChat</span>
+              <strong>{resumeData.contact.wechat}</strong>
             </div>
           </div>
         </section>

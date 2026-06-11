@@ -25,3 +25,9 @@ The local site is available at `http://localhost:4321`.
 npm run build
 npm run preview
 ```
+
+## Contributors
+
+- [Ruizhe Li](https://github.com/liruizhe-cn)
+- [ChatGPT](https://github.com/openai)
+- [Codex](https://github.com/openai/codex)

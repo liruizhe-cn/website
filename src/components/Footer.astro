@@ -159,38 +159,3 @@ const currentYear = new Date().getFullYear();
     }
   }
 </style>
-
-<script>
-  // Client-side script to mark the active footer link
-  function updateActiveFooterLink() {
-    const currentPath = window.location.pathname;
-    const normalizedPath = "/" + currentPath.replace(/^\/+|\/+$/g, "");
-    const rootPath = "/";
-    const links = document.querySelectorAll(".footer-column-2 ul li a");
-
-    links.forEach((link) => {
-      const linkHref = link.getAttribute("href");
-      const linkParentLi = link.closest("li");
-      if (!linkHref || !linkParentLi) return;
-      const normalizedHref = "/" + linkHref.replace(/^\/+|\/+$/g, "");
-
-      linkParentLi.classList.remove("active"); // Remove active from all first
-
-      if (
-        linkHref === rootPath &&
-        (currentPath === rootPath || currentPath === "/index.html")
-      ) {
-        linkParentLi.classList.add("active");
-      } else if (
-        linkHref !== rootPath &&
-        linkHref.startsWith("/") &&
-        !linkHref.includes("#") &&
-        normalizedHref === normalizedPath
-      ) {
-        linkParentLi.classList.add("active");
-      }
-    });
-  }
-
-  updateActiveFooterLink();
-</script>
