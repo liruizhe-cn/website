@@ -237,18 +237,8 @@ const {
 </style>
 
 <script>
-  let currentIntersectionObserver: IntersectionObserver | null = null;
-
-  document.addEventListener("astro:page-load", () => {
-    if (currentIntersectionObserver) {
-      currentIntersectionObserver.disconnect();
-    }
-
-    const pageWrapper = document.querySelector(".page-wrapper");
-    if (!pageWrapper) {
-      console.error("Page wrapper element not found for IntersectionObserver.");
-      return;
-    }
+  const pageWrapper = document.querySelector(".page-wrapper");
+  if (pageWrapper) {
     const observerOptions = {
       root: pageWrapper,
       rootMargin: "0px",
@@ -264,14 +254,12 @@ const {
       });
     };
 
-    const newObserver = new IntersectionObserver(
+    const observer = new IntersectionObserver(
       observerCallback,
       observerOptions
     );
 
-    currentIntersectionObserver = newObserver;
-
     const targets = document.querySelectorAll(".project-card");
-    targets.forEach((target) => newObserver.observe(target));
-  });
+    targets.forEach((target) => observer.observe(target));
+  }
 </script>

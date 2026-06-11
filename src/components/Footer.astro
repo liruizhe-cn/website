@@ -27,15 +27,13 @@ const currentYear = new Date().getFullYear();
         <li>
           <a
             class="link"
-            href="contact"
-            target="_connect"
-            rel="noopener noreferrer">WeChat</a
+            href="/contact">WeChat</a
           >
         </li>
         <li>
           <a
             class="link"
-            href="mailto:me@clium@yahoo.com"
+            href="mailto:clium@yahoo.com"
             target="_blank"
             rel="noopener noreferrer">Email</a
           >
@@ -194,5 +192,5 @@ const currentYear = new Date().getFullYear();
     });
   }
 
-  document.addEventListener("astro:page-load", updateActiveFooterLink);
+  updateActiveFooterLink();
 </script>

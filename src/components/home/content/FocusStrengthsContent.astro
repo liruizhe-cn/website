@@ -1,0 +1,79 @@
+---
+const focusAreas = [
+  {
+    title: "Photography & Visual Observation",
+    description:
+      "I use photography to observe light, traces, atmosphere, and unfinished moments. My work often stays close to quiet scenes, missed images, and personal records.",
+  },
+  {
+    title: "Independent App Design",
+    description:
+      "I design and build small personal apps, including Echo, Kisp, and Latent. They explore productivity, everyday tools, photography, reflection, and the relationship between experience and interface design.",
+  },
+  {
+    title: "Language & Communication",
+    description:
+      "As a Japanese major student, I am interested in language learning, translation, speaking, subtitles, and cross-cultural expression. Bilingual thinking also shapes how I write and design.",
+  },
+  {
+    title: "Writing & Creative Production",
+    description:
+      "I turn scattered ideas into organized materials such as event documents, video scripts, presentations, program lists, project briefs, and visual prompts.",
+  },
+  {
+    title: "Piano & Long-term Practice",
+    description:
+      "Piano has shaped my sense of rhythm, patience, and attention to detail. It remains one of my long-term interests alongside photography and app design.",
+  },
+] as const;
+---
+
+<h2 slot="title" class="about-title scroll-reveal-animate">
+  Focus &amp; Strengths
+</h2>
+
+<div class="about-content focus-grid scroll-reveal-animate">
+  {
+    focusAreas.map((area) => (
+      <article class="focus-item">
+        <h3>{area.title}</h3>
+        <p>{area.description}</p>
+      </article>
+    ))
+  }
+</div>
+
+<style>
+  .focus-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem 2.5rem;
+    max-width: 78ch;
+  }
+
+  .focus-item {
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--button-border-color);
+  }
+
+  .focus-item h3 {
+    margin: 0 0 0.65rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  .focus-item p {
+    margin: 0;
+    font-size: 1.05rem;
+    line-height: 1.65;
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 767px) {
+    .focus-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+  }
+</style>

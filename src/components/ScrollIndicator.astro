@@ -64,145 +64,27 @@
 </style>
 
 <script>
-  import { gsap } from "gsap";
-  import { ScrollTrigger } from "gsap/ScrollTrigger";
-  import { ScrollToPlugin } from "gsap/ScrollToPlugin";
+  const indicator = document.querySelector(
+    "#scroll-indicator"
+  ) as HTMLElement | null;
+  const pageWrapper = document.querySelector(
+    ".page-wrapper"
+  ) as HTMLElement | null;
 
-  gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
-
-  let indicatorScrubTrigger: ScrollTrigger | null = null;
-  let indicatorCallbackTrigger: ScrollTrigger | null = null;
-  let fadeInTimeout: ReturnType<typeof setTimeout> | null = null;
-  let clickListenerAttached = false;
-
-  function cleanupTriggers() {
-    console.log("[ScrollIndicator] cleanupTriggers CALLED.");
-    if (indicatorScrubTrigger) {
-      console.log("[ScrollIndicator] Killing Scrub Trigger...");
-      indicatorScrubTrigger.kill();
-      indicatorScrubTrigger = null;
-    }
-    if (indicatorCallbackTrigger) {
-      console.log("[ScrollIndicator] Killing Callback Trigger...");
-      indicatorCallbackTrigger.kill();
-      indicatorCallbackTrigger = null;
-    }
-    if (fadeInTimeout !== null) {
-      clearTimeout(fadeInTimeout);
-      fadeInTimeout = null;
-      console.log(
-        "[ScrollIndicator] Cleared pending fade-in timeout during cleanup."
-      );
-    }
-  }
-
-  function setupIndicatorAnimation(
-    indicator: HTMLElement,
-    pageWrapper: HTMLElement
-  ) {
-    console.log("[ScrollIndicator] setupIndicatorAnimation CALLED.");
-
-    console.log("[ScrollIndicator] Setting up new triggers...");
-
-    const animation = gsap.fromTo(
-      indicator,
-      { opacity: 0.6 },
-      { opacity: 0, immediateRender: false }
-    );
-    indicatorScrubTrigger = ScrollTrigger.create({
-      trigger: pageWrapper,
-      scroller: pageWrapper,
-      start: "10px top",
-      end: "+=150",
-      animation: animation,
-      scrub: 0.5,
-    });
-    console.log("[ScrollIndicator] Setup new indicator Scrub Trigger");
-
-    const showIndicator = (delay = 0) => {
-      if (indicatorScrubTrigger?.isActive) return;
-      if (fadeInTimeout !== null) clearTimeout(fadeInTimeout);
-      fadeInTimeout = setTimeout(() => {
-        if (pageWrapper.scrollTop < 10) {
-          gsap.to(indicator, { opacity: 0.6, duration: 0.5, overwrite: true });
-        }
-      }, delay);
-    };
-    const hideIndicator = () => {
-      if (fadeInTimeout !== null) clearTimeout(fadeInTimeout);
-      if (!indicatorScrubTrigger?.isActive) {
-        gsap.to(indicator, { opacity: 0, duration: 0.3, overwrite: true });
-      }
+  if (indicator && pageWrapper) {
+    const updateVisibility = () => {
+      indicator.classList.toggle("visible", pageWrapper.scrollTop < 10);
     };
 
-    gsap.set(indicator, { opacity: 0 });
-    if (pageWrapper.scrollTop < 10) showIndicator(3000);
+    const revealTimer = window.setTimeout(updateVisibility, 1400);
+    pageWrapper.addEventListener("scroll", updateVisibility, { passive: true });
 
-    indicatorCallbackTrigger = ScrollTrigger.create({
-      trigger: pageWrapper,
-      scroller: pageWrapper,
-      start: "10px top",
-      onEnter: hideIndicator,
-      onLeaveBack: () => {
-        if (pageWrapper.scrollTop < 5) {
-          hideIndicator();
-        } else {
-          showIndicator(3000);
-        }
-      },
-    });
-    console.log("[ScrollIndicator] Setup new indicator Callback Trigger");
-  }
-
-  function setupClickListener(
-    indicator: HTMLElement,
-    pageWrapper: HTMLElement
-  ) {
-    if (clickListenerAttached) {
-      console.log(
-        "[ScrollIndicator] Click listener already attached. Skipping."
-      );
-      return;
-    }
-    console.log("[ScrollIndicator] Attaching click listener.");
     indicator.addEventListener("click", () => {
-      const currentOpacity = parseFloat(
-        window.getComputedStyle(indicator).opacity
-      );
-      if (currentOpacity > 0.1) {
-        gsap.to(pageWrapper, {
-          duration: 1.6, // Adjusted duration slightly
-          scrollTo: pageWrapper.scrollTop + pageWrapper.clientHeight,
-          ease: "power2.out", // Adjusted ease slightly
-        });
-      }
+      window.clearTimeout(revealTimer);
+      pageWrapper.scrollTo({
+        top: pageWrapper.scrollTop + pageWrapper.clientHeight,
+        behavior: "smooth",
+      });
     });
-    clickListenerAttached = true; // Mark as attached
   }
-
-  document.addEventListener(
-    "astro:page-load",
-    () => {
-      console.log(
-        `[ScrollIndicator] astro:page-load DETECTED on path: "${window.location.pathname}".`
-      );
-
-      cleanupTriggers();
-
-      const indicatorElement = document.querySelector(
-        "#scroll-indicator"
-      ) as HTMLElement | null;
-      const pageWrapperElement = document.querySelector(
-        ".page-wrapper"
-      ) as HTMLElement | null;
-
-      if (indicatorElement && pageWrapperElement) {
-        setupIndicatorAnimation(indicatorElement, pageWrapperElement);
-        setupClickListener(indicatorElement, pageWrapperElement);
-      } else {
-        clickListenerAttached = false;
-      }
-    },
-    { once: false }
-  );
 </script>
