@@ -21,37 +21,6 @@ const showScrollIndicator =
   showIndicatorOverride !== undefined
     ? showIndicatorOverride
     : shouldShowBasedOnPath;
-
-const pageTransition = {
-  forwards: {
-    old: {
-      name: "page-out",
-      duration: "170ms",
-      easing: "ease-out",
-      fillMode: "both",
-    },
-    new: {
-      name: "page-in",
-      duration: "190ms",
-      easing: "ease-out",
-      fillMode: "both",
-    },
-  },
-  backwards: {
-    old: {
-      name: "page-out",
-      duration: "170ms",
-      easing: "ease-out",
-      fillMode: "both",
-    },
-    new: {
-      name: "page-in",
-      duration: "190ms",
-      easing: "ease-out",
-      fillMode: "both",
-    },
-  },
-} as const;
 ---
 
 <!doctype html>
@@ -535,11 +504,7 @@ const pageTransition = {
   <body>
     <div class="page-wrapper">
       <DynamicBackground />
-      <div
-        class="page-foreground"
-        transition:name="page-foreground"
-        transition:animate={pageTransition}
-      >
+      <div class="page-foreground">
         <main class="main-content">
           <slot />
         </main>
