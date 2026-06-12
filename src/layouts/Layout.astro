@@ -24,11 +24,7 @@ const showScrollIndicator =
 ---
 
 <!doctype html>
-<html
-  lang="en"
-  data-page={shouldShowBasedOnPath ? "home" : "subpage"}
-  transition:animate="none"
->
+<html lang="en" data-page={shouldShowBasedOnPath ? "home" : "subpage"}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -224,12 +220,6 @@ const showScrollIndicator =
         opacity: 1;
         filter: none;
         transform: none;
-      }
-
-      ::view-transition-old(root),
-      ::view-transition-new(root) {
-        animation: none;
-        mix-blend-mode: normal;
       }
 
       a {
