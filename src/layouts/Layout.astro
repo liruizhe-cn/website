@@ -1,6 +1,8 @@
 ---
 import { ClientRouter } from "astro:transitions";
-import "../styles/fonts.css";
+import "@fontsource-variable/eb-garamond";
+import "@fontsource-variable/eb-garamond/wght-italic.css";
+import "@fontsource-variable/inter";
 import DynamicBackground from "../components/DynamicBackground.astro";
 import ScrollIndicator from "../components/ScrollIndicator.astro";
 import Footer from "../components/Footer.astro";
@@ -24,28 +26,28 @@ const pageTransition = {
   forwards: {
     old: {
       name: "page-out",
-      duration: "180ms",
-      easing: "cubic-bezier(0.4, 0, 1, 1)",
+      duration: "170ms",
+      easing: "ease-out",
       fillMode: "both",
     },
     new: {
       name: "page-in",
-      duration: "220ms",
-      easing: "cubic-bezier(0.16, 1, 0.3, 1)",
+      duration: "190ms",
+      easing: "ease-out",
       fillMode: "both",
     },
   },
   backwards: {
     old: {
       name: "page-out",
-      duration: "180ms",
-      easing: "cubic-bezier(0.4, 0, 1, 1)",
+      duration: "170ms",
+      easing: "ease-out",
       fillMode: "both",
     },
     new: {
       name: "page-in",
-      duration: "220ms",
-      easing: "cubic-bezier(0.16, 1, 0.3, 1)",
+      duration: "190ms",
+      easing: "ease-out",
       fillMode: "both",
     },
   },
@@ -53,14 +55,18 @@ const pageTransition = {
 ---
 
 <!doctype html>
-<html lang="en" transition:animate="none">
+<html
+  lang="en"
+  data-page={shouldShowBasedOnPath ? "home" : "subpage"}
+  transition:animate="none"
+>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <meta name="generator" content={Astro.generator} />
     <title>{pageTitle}</title>
-    <ClientRouter />
+    <ClientRouter fallback="swap" />
     <script is:inline>
       const isDarkMode =
         window.matchMedia &&
@@ -72,22 +78,40 @@ const pageTransition = {
       }
 
       if (!window.__calvinPalette) {
-        const palettes = ["verdigris", "lapis", "moss", "slate"];
+        const palettes = [
+          "verdigris",
+          "lapis",
+          "moss",
+          "slate",
+          "apricot",
+          "iris",
+        ];
+        let current = "";
         let previous = "";
         try {
-          previous =
+          current =
             window.sessionStorage.getItem("calvin-background-palette") || "";
+          previous =
+            window.localStorage.getItem("calvin-previous-palette") || "";
         } catch {}
 
-        const choices = palettes.filter((palette) => palette !== previous);
-        const randomValue = window.crypto?.getRandomValues
-          ? window.crypto.getRandomValues(new Uint32Array(1))[0]
-          : Math.floor(Math.random() * 2 ** 32);
-        window.__calvinPalette = choices[randomValue % choices.length];
+        if (palettes.includes(current)) {
+          window.__calvinPalette = current;
+        } else {
+          const choices = palettes.filter((palette) => palette !== previous);
+          const randomValue = window.crypto?.getRandomValues
+            ? window.crypto.getRandomValues(new Uint32Array(1))[0]
+            : Math.floor(Math.random() * 2 ** 32);
+          window.__calvinPalette = choices[randomValue % choices.length];
+        }
 
         try {
           window.sessionStorage.setItem(
             "calvin-background-palette",
+            window.__calvinPalette
+          );
+          window.localStorage.setItem(
+            "calvin-previous-palette",
             window.__calvinPalette
           );
         } catch {}
@@ -98,30 +122,53 @@ const pageTransition = {
     <style>
       :root {
         /* Light Theme (Default) */
-        --bg-color: #ffffff;
-        --text-color: #2e2e2e;
-        --text-muted: #383838;
+        --bg-color: var(--theme-surface, #f5faf8);
+        --text-color: var(--theme-ink, #172421);
+        --text-muted: var(--theme-muted, #354440);
         --link-color: var(--text-color);
-        --link-hover-color: #101010;
-        --link-visited-color: #101010;
-        --footer-bg: #f8f9faaa;
-        --footer-text: #343a40;
-        --footer-heading: #212529;
-        --footer-link: #384044;
-        --footer-link-hover: #212529;
-        --footer-copyright: #6c757d;
-        --dynamic-bg-opacity: 0.48;
+        --link-hover-color: var(--theme-ink-strong, #0d1715);
+        --link-visited-color: var(--link-hover-color);
+        --footer-bg: color-mix(
+          in oklch,
+          var(--theme-surface) 82%,
+          var(--theme-primary)
+        );
+        --footer-text: var(--theme-muted);
+        --footer-heading: var(--theme-ink-strong);
+        --footer-link: var(--theme-muted);
+        --footer-link-hover: var(--theme-ink-strong);
+        --footer-copyright: color-mix(
+          in oklch,
+          var(--theme-muted) 72%,
+          var(--theme-surface)
+        );
 
-        --button-hover-bg: #55555516;
-        --button-hover-text: #121212;
-        --button-border-color: #55555599;
-        --button-border-hover-color: #121212cc;
+        --button-hover-bg: color-mix(
+          in oklch,
+          var(--theme-primary) 12%,
+          transparent
+        );
+        --button-hover-text: var(--theme-ink-strong);
+        --button-border-color: color-mix(
+          in oklch,
+          var(--theme-ink) 46%,
+          transparent
+        );
+        --button-border-hover-color: color-mix(
+          in oklch,
+          var(--theme-ink-strong) 78%,
+          transparent
+        );
 
         --card-border-color: var(--button-border-color);
 
-        --timeline-marker-border-color: #333;
-        --timeline-marker-bg-color: #333;
-        --timeline-line-color: #3333;
+        --timeline-marker-border-color: var(--theme-ink);
+        --timeline-marker-bg-color: var(--theme-ink);
+        --timeline-line-color: color-mix(
+          in oklch,
+          var(--theme-ink) 22%,
+          transparent
+        );
 
         --font-family-serif: "EB Garamond Variable", Garamond,
           "Times New Roman", serif;
@@ -131,30 +178,12 @@ const pageTransition = {
       }
 
       html.dark {
-        --bg-color: #121212;
-        --text-color: #e3e3e3;
-        --text-muted: #d4d4d4;
+        --bg-color: var(--theme-surface, #111918);
+        --text-color: var(--theme-ink, #ecf3f1);
+        --text-muted: var(--theme-muted, #c3cecb);
         --link-color: var(--text-color);
-        --link-hover-color: #fff;
-        --link-visited-color: #fff;
-        --footer-bg: #161616aa;
-        --footer-text: #cccccc;
-        --footer-heading: #eeeeee;
-        --footer-link: #cccccc;
-        --footer-link-hover: #ffffff;
-        --footer-copyright: #888888;
-        --dynamic-bg-opacity: 0.62;
-
-        --button-hover-bg: #cccccc26;
-        --button-hover-text: #fff;
-        --button-border-color: #cccccc99;
-        --button-border-hover-color: #ffffffcc;
-
-        --card-border-color: var(--button-border-color);
-
-        --timeline-marker-border-color: #cccccc;
-        --timeline-marker-bg-color: #cccccc;
-        --timeline-line-color: #cccccc33;
+        --link-hover-color: var(--theme-ink-strong, #ffffff);
+        --link-visited-color: var(--link-hover-color);
       }
 
       html {
@@ -196,47 +225,42 @@ const pageTransition = {
 
     <style is:global>
       .scroll-reveal-animate {
+        opacity: 1;
+        filter: none;
+        transform: none;
+      }
+
+      html[data-page="home"] .scroll-reveal-animate {
         opacity: 0;
-        filter: blur(5px);
-        transform: translateY(20px) translateZ(0);
+        filter: blur(4px);
+        transform: translateY(12px) translateZ(0);
         will-change: opacity, filter, transform;
         transition:
-          opacity 0.8s ease-out,
-          filter 0.8s ease-out,
-          transform 0.8s ease-out;
+          opacity 0.65s ease-out,
+          filter 0.65s ease-out,
+          transform 0.65s ease-out;
       }
-      .scroll-reveal-animate.visible {
+      html[data-page="home"] .scroll-reveal-animate.visible {
         opacity: 1;
         filter: blur(0px);
         transform: translateY(0) translateZ(0);
       }
 
       .page-load-initial-state {
-        opacity: 0;
-        filter: blur(5px);
-        transform: translateY(20px) translateZ(0);
-        will-change: opacity, filter, transform;
-      }
-
-      @keyframes pageLoadAnimate {
-        to {
-          opacity: 1;
-          filter: blur(0px);
-          transform: translateY(0) translateZ(0);
-        }
+        opacity: 1;
+        filter: none;
+        transform: none;
       }
 
       @keyframes page-in {
         from {
           opacity: 0;
-          transform: translateY(8px);
         }
       }
 
       @keyframes page-out {
         to {
           opacity: 0;
-          transform: translateY(-6px);
         }
       }
 
@@ -253,6 +277,24 @@ const pageTransition = {
         color: var(--link-hover-color);
         text-decoration: underline;
         text-underline-offset: 0.2em;
+      }
+
+      a[href^="/"]:not([download]) {
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      a[href^="/"]:not([download]):active {
+        transform: translateY(1px) scale(0.985);
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .scroll-reveal-animate,
+        .scroll-reveal-animate.visible {
+          opacity: 1;
+          filter: none;
+          transform: none;
+          transition: none;
+        }
       }
     </style>
 
@@ -295,6 +337,113 @@ const pageTransition = {
         ) as HTMLElement | null;
         if (!pageWrapper) return;
 
+        const isHomepage =
+          window.location.pathname === "/" ||
+          window.location.pathname === "/index.html";
+        const desktopScrollQuery = window.matchMedia(
+          "(min-width: 768px) and (pointer: fine)"
+        );
+        const reducedMotionQuery = window.matchMedia(
+          "(prefers-reduced-motion: reduce)"
+        );
+        let snapPositions: number[] = [];
+        let gestureLocked = false;
+        let gestureTimer = 0;
+        let animationUntil = 0;
+
+        const calculateSnapPositions = () => {
+          if (!isHomepage) {
+            snapPositions = [];
+            return;
+          }
+
+          const maxScroll = Math.max(
+            0,
+            pageWrapper.scrollHeight - pageWrapper.clientHeight
+          );
+          const sections = Array.from(
+            document.querySelectorAll<HTMLElement>(
+              ".hero-section, .homepage-content > .section-wrapper"
+            )
+          );
+          const centeredSections = sections.map((section) =>
+            Math.min(
+              maxScroll,
+              Math.max(
+                0,
+                section.offsetTop +
+                  section.offsetHeight / 2 -
+                  pageWrapper.clientHeight / 2
+              )
+            )
+          );
+          snapPositions = [...centeredSections, maxScroll]
+            .sort((a, b) => a - b)
+            .filter(
+              (position, index, positions) =>
+                index === 0 || Math.abs(position - positions[index - 1]) > 2
+            );
+        };
+
+        const nearestSnapIndex = () => {
+          let nearestIndex = 0;
+          let nearestDistance = Number.POSITIVE_INFINITY;
+          snapPositions.forEach((position, index) => {
+            const distance = Math.abs(pageWrapper.scrollTop - position);
+            if (distance < nearestDistance) {
+              nearestDistance = distance;
+              nearestIndex = index;
+            }
+          });
+          return nearestIndex;
+        };
+
+        const moveBySection = (direction: -1 | 1) => {
+          calculateSnapPositions();
+          if (snapPositions.length === 0) return;
+
+          const nextIndex = Math.min(
+            snapPositions.length - 1,
+            Math.max(0, nearestSnapIndex() + direction)
+          );
+          animationUntil = Date.now() + (reducedMotionQuery.matches ? 0 : 650);
+          pageWrapper.scrollTo({
+            top: snapPositions[nextIndex],
+            behavior: reducedMotionQuery.matches ? "auto" : "smooth",
+          });
+        };
+
+        const releaseGesture = () => {
+          window.clearTimeout(gestureTimer);
+          const remainingAnimation = animationUntil - Date.now();
+          gestureTimer = window.setTimeout(
+            () => {
+              gestureLocked = false;
+            },
+            Math.max(160, remainingAnimation)
+          );
+        };
+
+        if (isHomepage) {
+          calculateSnapPositions();
+          pageWrapper.addEventListener(
+            "wheel",
+            (event) => {
+              if (!desktopScrollQuery.matches || event.ctrlKey) return;
+              if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
+
+              event.preventDefault();
+              if (!gestureLocked && Math.abs(event.deltaY) >= 2) {
+                gestureLocked = true;
+                moveBySection(event.deltaY > 0 ? 1 : -1);
+              }
+              releaseGesture();
+            },
+            { passive: false, signal }
+          );
+          window.addEventListener("resize", calculateSnapPositions, { signal });
+        }
+
         const revealTargets = document.querySelectorAll(
           ".scroll-reveal-animate, .project-card"
         );
@@ -334,10 +483,14 @@ const pageTransition = {
             "click",
             () => {
               clearTimeout(revealTimer);
-              pageWrapper.scrollTo({
-                top: pageWrapper.scrollTop + pageWrapper.clientHeight,
-                behavior: "smooth",
-              });
+              if (isHomepage && desktopScrollQuery.matches) {
+                moveBySection(1);
+              } else {
+                pageWrapper.scrollTo({
+                  top: pageWrapper.scrollTop + pageWrapper.clientHeight,
+                  behavior: reducedMotionQuery.matches ? "auto" : "smooth",
+                });
+              }
             },
             { signal }
           );
@@ -371,6 +524,8 @@ const pageTransition = {
               history.replaceState(null, "", window.location.pathname);
             });
           }
+        } else if (!isHomepage) {
+          pageWrapper.scrollTop = 0;
         }
       }
 
