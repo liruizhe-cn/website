@@ -24,7 +24,11 @@ const showScrollIndicator =
 ---
 
 <!doctype html>
-<html lang="en" data-page={shouldShowBasedOnPath ? "home" : "subpage"}>
+<html
+  lang="en"
+  data-page={shouldShowBasedOnPath ? "home" : "subpage"}
+  transition:animate="none"
+>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -172,6 +176,23 @@ const showScrollIndicator =
         transition: none;
       }
 
+      .page-foreground {
+        opacity: 1;
+        transition: opacity 280ms cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      html.is-page-preparing .page-foreground {
+        opacity: 0.42;
+        transition-duration: 180ms;
+        transition-timing-function: ease-out;
+      }
+
+      html.is-page-swapping .page-foreground,
+      html.is-page-entering .page-foreground {
+        opacity: 0;
+        transition: none;
+      }
+
       .page-wrapper {
         height: 100vh;
         height: 100dvh;
@@ -272,9 +293,20 @@ const showScrollIndicator =
       let pageController: AbortController | null = null;
       let pageObserver: IntersectionObserver | null = null;
 
+      document.addEventListener("astro:before-preparation", (event) => {
+        document.documentElement.classList.add("is-page-preparing");
+        event.signal.addEventListener(
+          "abort",
+          () => document.documentElement.classList.remove("is-page-preparing"),
+          { once: true }
+        );
+      });
+
       document.addEventListener("astro:before-swap", (event) => {
+        document.documentElement.classList.remove("is-page-preparing");
         document.documentElement.classList.add("is-page-swapping");
         event.newDocument.documentElement.classList.add("is-page-swapping");
+        event.newDocument.documentElement.classList.add("is-page-entering");
         event.newDocument.documentElement.classList.toggle(
           "dark",
           document.documentElement.classList.contains("dark")
@@ -288,6 +320,9 @@ const showScrollIndicator =
       document.addEventListener("astro:after-swap", () => {
         requestAnimationFrame(() => {
           document.documentElement.classList.remove("is-page-swapping");
+          requestAnimationFrame(() => {
+            document.documentElement.classList.remove("is-page-entering");
+          });
         });
       });
 
