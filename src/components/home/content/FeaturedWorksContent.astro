@@ -23,9 +23,16 @@ function slugify(text: string): string {
 }
 ---
 
-<h2 slot="title" class="about-title scroll-target-title">Featured Works</h2>
+<h2
+  slot="title"
+  class="about-title scroll-target-title scroll-reveal-animate"
+>
+  Featured Works
+</h2>
 
-<div class="about-content scroll-target-content featured-works-container">
+<div
+  class="about-content scroll-target-content scroll-reveal-animate featured-works-container"
+>
   {
     featuredProjects.map((project) => {
       const slug = slugify(project.title);

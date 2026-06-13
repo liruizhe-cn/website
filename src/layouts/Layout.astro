@@ -216,31 +216,35 @@ const showScrollIndicator =
 
     <style is:global>
       .scroll-reveal-animate {
-        opacity: 1;
-        filter: none;
-        transform: none;
-      }
-
-      html[data-page="home"] .scroll-reveal-animate {
         opacity: 0;
-        filter: blur(4px);
-        transform: translateY(12px) translateZ(0);
+        filter: blur(5px);
+        transform: translateY(20px) translateZ(0);
         will-change: opacity, filter, transform;
         transition:
-          opacity 0.65s ease-out,
-          filter 0.65s ease-out,
-          transform 0.65s ease-out;
+          opacity 0.8s ease-out,
+          filter 0.8s ease-out,
+          transform 0.8s ease-out;
       }
-      html[data-page="home"] .scroll-reveal-animate.visible {
+
+      .scroll-reveal-animate.visible {
         opacity: 1;
         filter: blur(0px);
         transform: translateY(0) translateZ(0);
       }
 
       .page-load-initial-state {
-        opacity: 1;
-        filter: none;
-        transform: none;
+        opacity: 0;
+        filter: blur(5px);
+        transform: translateY(20px) translateZ(0);
+        will-change: opacity, filter, transform;
+      }
+
+      @keyframes pageLoadAnimate {
+        to {
+          opacity: 1;
+          filter: blur(0px);
+          transform: translateY(0) translateZ(0);
+        }
       }
 
       a {
@@ -268,11 +272,13 @@ const showScrollIndicator =
 
       @media (prefers-reduced-motion: reduce) {
         .scroll-reveal-animate,
-        .scroll-reveal-animate.visible {
+        .scroll-reveal-animate.visible,
+        .page-load-initial-state {
           opacity: 1;
           filter: none;
           transform: none;
           transition: none;
+          animation: none;
         }
       }
     </style>
@@ -452,22 +458,27 @@ const showScrollIndicator =
         const revealTargets = document.querySelectorAll(
           ".scroll-reveal-animate, .project-card"
         );
-        pageObserver = new IntersectionObserver(
-          (entries, observer) => {
-            entries.forEach((entry) => {
-              if (entry.isIntersecting) {
-                entry.target.classList.add("visible");
-                observer.unobserve(entry.target);
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            if (signal.aborted) return;
+            pageObserver = new IntersectionObserver(
+              (entries, observer) => {
+                entries.forEach((entry) => {
+                  if (entry.isIntersecting) {
+                    entry.target.classList.add("visible");
+                    observer.unobserve(entry.target);
+                  }
+                });
+              },
+              {
+                root: pageWrapper,
+                rootMargin: "0px",
+                threshold: 0.2,
               }
-            });
-          },
-          {
-            root: pageWrapper,
-            rootMargin: "0px 0px -8% 0px",
-            threshold: 0.12,
-          }
-        );
-        revealTargets.forEach((target) => pageObserver?.observe(target));
+            );
+            revealTargets.forEach((target) => pageObserver?.observe(target));
+          });
+        });
 
         const indicator = document.querySelector(
           "#scroll-indicator"

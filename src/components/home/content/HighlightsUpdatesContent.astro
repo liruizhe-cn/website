@@ -35,11 +35,14 @@ function formatEventDate(dateStr: string): string {
 }
 ---
 
-<h2 slot="title" class="about-title scroll-target-title">
+<h2
+  slot="title"
+  class="about-title scroll-target-title scroll-reveal-animate"
+>
   Highlights & Updates
 </h2>
 
-<div class="about-content scroll-target-content">
+<div class="about-content scroll-target-content scroll-reveal-animate">
   {
     highlightsToShow.length > 0 ? (
       <ul class="highlights-list-enhanced">
