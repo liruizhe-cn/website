@@ -19,7 +19,7 @@ let initialFilteredEvents = allTimelineEvents.sort((a, b) =>
 ---
 
 <SubPageLayout title="Timeline">
-  <div class="timeline-controls">
+  <div class="timeline-controls scroll-reveal-animate">
     <div class="control-group category-tabs">
       <button
         type="button"
@@ -110,7 +110,7 @@ let initialFilteredEvents = allTimelineEvents.sort((a, b) =>
         : "";
 
       timelineHTML += `
-        <li class="timeline-event ${isLast ? "is-last" : ""}">
+        <li class="timeline-event scroll-reveal-animate ${isLast ? "is-last" : ""}">
           <div class="timeline-marker"></div>
           <div class="timeline-content">
             <div class="timeline-header">
@@ -127,6 +127,9 @@ let initialFilteredEvents = allTimelineEvents.sort((a, b) =>
     timelineContainer.innerHTML = timelineHTML;
 
     timelineContainer.classList.remove("is-updating");
+    requestAnimationFrame(() => {
+      document.dispatchEvent(new Event("calvin:refresh-reveals"));
+    });
   }
 
   const handleCategoryClick = async (e) => {

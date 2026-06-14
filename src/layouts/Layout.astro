@@ -181,6 +181,10 @@ const showScrollIndicator =
         transition: opacity 280ms cubic-bezier(0.22, 1, 0.36, 1);
       }
 
+      html[data-page="home"] .page-foreground {
+        transition-duration: 420ms;
+      }
+
       html.is-page-preparing .page-foreground {
         opacity: 0.42;
         transition-duration: 180ms;
@@ -455,9 +459,6 @@ const showScrollIndicator =
           window.addEventListener("resize", calculateSnapPositions, { signal });
         }
 
-        const revealTargets = document.querySelectorAll(
-          ".scroll-reveal-animate, .project-card"
-        );
         requestAnimationFrame(() => {
           requestAnimationFrame(() => {
             if (signal.aborted) return;
@@ -476,7 +477,21 @@ const showScrollIndicator =
                 threshold: 0.2,
               }
             );
-            revealTargets.forEach((target) => pageObserver?.observe(target));
+
+            const observeRevealTargets = () => {
+              document
+                .querySelectorAll(
+                  ".scroll-reveal-animate:not(.visible), .project-card:not(.visible)"
+                )
+                .forEach((target) => pageObserver?.observe(target));
+            };
+
+            observeRevealTargets();
+            document.addEventListener(
+              "calvin:refresh-reveals",
+              observeRevealTargets,
+              { signal }
+            );
           });
         });
 

@@ -2,12 +2,12 @@
 import { resumeData } from "../../data/resumeData";
 ---
 
-<section class="resume-section scroll-reveal-animate">
-  <h2>Skills</h2>
+<section class="resume-section">
+  <h2 class="scroll-reveal-animate">Skills</h2>
   <div class="skills-grid">
     {
       resumeData.skills.map((skill) => (
-        <div class="skill-category">
+        <div class="skill-category scroll-reveal-animate">
           <h3>{skill.category}</h3>
           <ul>
             {skill.items.map((item) => (
@@ -55,5 +55,11 @@ import { resumeData } from "../../data/resumeData";
   .skill-category li {
     margin-bottom: 0.4rem;
     color: var(--text-muted); /* Slightly muted color for skill items */
+  }
+
+  @media (max-width: 600px) {
+    .skills-grid {
+      grid-template-columns: 1fr;
+    }
   }
 </style>

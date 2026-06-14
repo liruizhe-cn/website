@@ -102,15 +102,6 @@ export const resumeData = {
       ],
     },
     {
-      category: "Language & Communication",
-      items: [
-        "Japanese Learning",
-        "English Communication",
-        "Translation",
-        "Subtitles",
-      ],
-    },
-    {
       category: "AI-assisted Workflow",
       items: [
         "ChatGPT / GPT-5.5",

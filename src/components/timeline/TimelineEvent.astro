@@ -12,7 +12,13 @@ interface Props {
 const { date, dateRange, title, description, isLast = false } = Astro.props;
 ---
 
-<li class:list={["timeline-event", { "is-last": isLast }]}>
+<li
+  class:list={[
+    "timeline-event",
+    "scroll-reveal-animate",
+    { "is-last": isLast },
+  ]}
+>
   <div class="timeline-marker"></div>
   <div class="timeline-content">
     <div class="timeline-header">
