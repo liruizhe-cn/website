@@ -8,13 +8,17 @@ import ContactInfo from "../components/resume/ContactInfo.astro";
 import Profile from "../components/resume/Profile.astro";
 import Projects from "../components/resume/Projects.astro";
 import Button from "../components/common/Button.astro";
+import { getLocaleFromPath, siteContent } from "../i18n";
+
+const locale = getLocaleFromPath(Astro.url.pathname);
+const content = siteContent[locale].resume;
 ---
 
-<SubPageLayout title="Résumé">
+<SubPageLayout title={content.title} description={content.description}>
   <Button
-    href="/Calvin-Lee-Resume.pdf"
-    text="Download Résumé PDF"
-    download="Calvin-Lee-Resume.pdf"
+    href={content.pdfFile}
+    text={content.download}
+    download={content.pdfName}
     icon="↓"
     iconPosition="left"
     wrapperClass="resume-page-download"

@@ -1,5 +1,6 @@
 ---
 import { Icon } from "astro-icon/components";
+import { siteContent, type Locale } from "../../i18n";
 
 interface Props {
   id?: string;
@@ -11,19 +12,23 @@ interface Props {
   githubUrl?: string;
   githubRepos?: { title?: string; url: string }[];
   techStack?: string[];
+  locale: Locale;
 }
 
 const {
   id,
   title,
   imageSrc,
-  imageAlt = "Project thumbnail",
+  imageAlt,
   timeframe,
   projectUrl,
   githubUrl,
   githubRepos,
   techStack = [],
+  locale,
 } = Astro.props;
+const content = siteContent[locale].projects;
+const resolvedImageAlt = imageAlt || content.projectThumbnail;
 ---
 
 <article id={id} class="project-card">
@@ -32,7 +37,7 @@ const {
       <div class="project-image-wrapper">
         <img
           src={imageSrc}
-          alt={imageAlt}
+          alt={resolvedImageAlt}
           class="project-image"
           loading="lazy"
         />
@@ -63,7 +68,7 @@ const {
                 href={repo.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                title={`View ${repo.title || "source"} on GitHub`}
+                title={content.repositoryTitle(repo.title || "source")}
               >
                 <Icon name="ri:github-line" /> {repo.title || "GitHub"}
               </a>
@@ -73,7 +78,7 @@ const {
               href={githubUrl}
               target="_blank"
               rel="noopener noreferrer"
-              title="View source on GitHub"
+              title={content.sourceTitle}
             >
               <Icon name="ri:github-line" /> GitHub
             </a>
@@ -85,9 +90,9 @@ const {
               href={projectUrl}
               target="_blank"
               rel="noopener noreferrer"
-              title="Visit live site"
+              title={content.liveTitle}
             >
-              <Icon name="ri:external-link-line" /> Live Site
+              <Icon name="ri:external-link-line" /> {content.liveLabel}
             </a>
           )
         }

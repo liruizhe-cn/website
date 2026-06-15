@@ -1,30 +1,28 @@
 ---
 // Content for the "Meet me!" section
 import Button from "../../common/Button.astro";
+import {
+  getLocaleFromPath,
+  localizedPath,
+  siteContent,
+} from "../../../i18n";
 
-const resumeUrl = "/resume";
+const locale = getLocaleFromPath(Astro.url.pathname);
+const content = siteContent[locale].home;
+const resumeUrl = localizedPath(locale, "/resume");
 // const contactUrl = "/contact";
 ---
 
-<h2 slot="title" class="about-title scroll-reveal-animate">About me</h2>
+<h2 slot="title" class="about-title scroll-reveal-animate">{content.aboutTitle}</h2>
 
 <div class="about-content scroll-reveal-animate">
-  <p>
-    I often begin with everyday observations: a missed photo, a sentence in
-    another language, a small friction in daily life, or a tool I wish existed.
-  </p>
-
-  <p>
-    I turn these observations into visual records, written notes, and small
-    digital products. Photography, language, music, and app design are
-    different ways for me to notice more carefully and make ideas tangible.
-  </p>
+  {content.aboutParagraphs.map((paragraph) => <p>{paragraph}</p>)}
 
   <div class="button-group">
     <Button
       class="button"
       href={resumeUrl}
-      text="View My Résumé"
+      text={content.resumeCta}
       wrapperClass="meet-me-cta-button"
     />
   </div>

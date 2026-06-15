@@ -1,36 +1,43 @@
 ---
 import SubPageLayout from "../layouts/SubPageLayout.astro";
 import TimelineEvent from "../components/timeline/TimelineEvent.astro";
-import { allTimelineEvents } from "../data/timelineEvents";
 import "../styles/timeline.css";
+import {
+  formatMonth,
+  getLocaleFromPath,
+  getTimeline,
+  siteContent,
+} from "../i18n";
 
-const allEvents = allTimelineEvents;
+const locale = getLocaleFromPath(Astro.url.pathname);
+const content = siteContent[locale].timeline;
+const allEvents = getTimeline(locale);
 
 const categories = [
   ...new Set(allEvents.map((event) => event.category).filter(Boolean)),
 ].sort();
 
 let initialSortOrder = "newest";
-let initialFilteredEvents = allTimelineEvents.sort((a, b) =>
+let initialFilteredEvents = [...allEvents].sort((a, b) =>
   initialSortOrder === "newest"
     ? new Date(b.date).getTime() - new Date(a.date).getTime()
     : new Date(a.date).getTime() - new Date(b.date).getTime()
 );
 ---
 
-<SubPageLayout title="Timeline">
+<SubPageLayout title={content.title} description={content.description}>
   <div class="timeline-controls scroll-reveal-animate">
     <div class="control-group category-tabs">
       <button
         type="button"
         class="category-tab"
         data-category="all"
-        aria-pressed="true">All</button
+        aria-pressed="true">{content.all}</button
       >
       {
         categories.map((cat) => (
           <button type="button" class="category-tab" data-category={cat}>
-            {cat}
+            {content.categories[cat]}
           </button>
         ))
       }
@@ -41,7 +48,7 @@ let initialFilteredEvents = allTimelineEvents.sort((a, b) =>
     {
       initialFilteredEvents.map((event, index) => (
         <TimelineEvent
-          date={event.date}
+          date={formatMonth(locale, event.date)}
           dateRange={event.dateRange}
           title={event.title}
           description={event.description}
@@ -53,7 +60,14 @@ let initialFilteredEvents = allTimelineEvents.sort((a, b) =>
   </ul>
 </SubPageLayout>
 
-<script define:vars={{ allEvents }}>
+<script
+  define:vars={{
+    allEvents,
+    locale,
+    newestLabel: content.newest,
+    oldestLabel: content.oldest,
+  }}
+>
   (() => {
   let currentFilter = "all";
   let currentSort = "newest";
@@ -67,7 +81,10 @@ let initialFilteredEvents = allTimelineEvents.sort((a, b) =>
     if (!dateStr || !dateStr.includes("-")) return dateStr; // Return original if invalid
     const [year, month] = dateStr.split("-");
     const dateObj = new Date(parseInt(year), parseInt(month) - 1); // Month is 0-indexed
-    return dateObj.toLocaleString("en-US", { month: "long", year: "numeric" });
+    return dateObj.toLocaleString(locale === "ja" ? "ja-JP" : "en-US", {
+      month: "long",
+      year: "numeric",
+    });
   }
 
   async function renderTimeline() {
@@ -188,7 +205,7 @@ let initialFilteredEvents = allTimelineEvents.sort((a, b) =>
     if (!sortToggleButton) return;
     sortToggleButton.dataset.sortCurrent = currentSort;
     sortToggleButton.textContent =
-      currentSort === "newest" ? "Newest First" : "Oldest First";
+      currentSort === "newest" ? newestLabel : oldestLabel;
   }
 
   function initializeTimeline() {

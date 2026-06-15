@@ -1,10 +1,14 @@
 ---
 import { Icon } from "astro-icon/components";
-import { resumeData } from "../../data/resumeData";
+import { getLocaleFromPath, getResumeData, siteContent } from "../../i18n";
+
+const locale = getLocaleFromPath(Astro.url.pathname);
+const resumeData = getResumeData(locale);
+const labels = siteContent[locale].resume;
 ---
 
 <section class="resume-section scroll-reveal-animate">
-  <h2>Contact</h2>
+  <h2>{labels.sections.contact}</h2>
   <ul class="contact-list">
     <li>
       <Icon name="ri:mail-line" class="contact-icon" />

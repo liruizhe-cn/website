@@ -1,14 +1,16 @@
 ---
-// Component: src/components/home/Hero.astro
+import { getLocaleFromPath, siteContent } from "../../i18n";
+
+const locale = getLocaleFromPath(Astro.url.pathname);
+const content = siteContent[locale].home;
 ---
 
 <section class="hero-section">
   <div class="hero-text">
-    <div class="greeting hero-reveal">Hello, This is</div>
-    <div class="hero-name hero-reveal">Calvin Lee</div>
+    <div class="greeting hero-reveal">{content.greeting}</div>
+    <div class="hero-name hero-reveal" lang="en">{content.name}</div>
     <div class="hero-description hero-reveal">
-      A Japanese major student at Nantong University, working across
-      photography, language learning, piano, and independent app development.
+      {content.description}
     </div>
   </div>
 </section>
@@ -71,6 +73,16 @@
     margin-top: 2em;
     margin-left: 10px;
     animation-delay: 0.2s;
+  }
+
+  :global(html[lang="ja"]) .greeting {
+    font-size: clamp(1.35rem, 1.25rem + 1.3vw, 2.8rem);
+    letter-spacing: 0.12em;
+  }
+
+  :global(html[lang="ja"]) .hero-description {
+    max-width: 32em;
+    line-height: 1.75;
   }
 
   @media (prefers-reduced-motion: reduce) {

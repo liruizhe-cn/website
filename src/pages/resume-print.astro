@@ -2,23 +2,32 @@
 import "@fontsource-variable/eb-garamond";
 import "@fontsource-variable/eb-garamond/wght-italic.css";
 import "@fontsource-variable/inter";
-import { resumeData } from "../data/resumeData";
+import "../styles/fonts-ja.css";
+import {
+  getLocaleFromPath,
+  getResumeData,
+  siteContent,
+} from "../i18n";
+
+const locale = getLocaleFromPath(Astro.url.pathname);
+const resumeData = getResumeData(locale);
+const content = siteContent[locale].resume;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={locale}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <meta name="robots" content="noindex, nofollow" />
-    <title>{resumeData.name} — Résumé</title>
+    <title>{resumeData.name} — {content.title}</title>
   </head>
   <body>
     <main>
       <section class="page page-one">
         <header>
           <div>
-            <p class="eyebrow">Résumé</p>
+            <p class="eyebrow">{content.title}</p>
             <h1>{resumeData.name}</h1>
             <p class="subtitle">{resumeData.title}</p>
           </div>
@@ -34,12 +43,12 @@ import { resumeData } from "../data/resumeData";
         </header>
 
         <section>
-          <h2>Profile</h2>
+          <h2>{content.sections.profile}</h2>
           {resumeData.profile.map((paragraph) => <p>{paragraph}</p>)}
         </section>
 
         <section>
-          <h2>Education</h2>
+          <h2>{content.sections.education}</h2>
           {
             resumeData.education.map((entry) => (
               <article class="dated-entry">
@@ -59,7 +68,7 @@ import { resumeData } from "../data/resumeData";
         </section>
 
         <section>
-          <h2>Honors & Awards</h2>
+          <h2>{content.sections.awards}</h2>
           <div class="award-list">
             {
               resumeData.awards.map((award) => (
@@ -71,7 +80,7 @@ import { resumeData } from "../data/resumeData";
                     )}
                     {"work" in award && award.work && (
                       <p>
-                        Work: <a href={award.work.url}>{award.work.title}</a>
+                        {content.work}: <a href={award.work.url}>{award.work.title}</a>
                       </p>
                     )}
                   </div>
@@ -83,7 +92,7 @@ import { resumeData } from "../data/resumeData";
         </section>
 
         <section>
-          <h2>Experience</h2>
+          <h2>{content.sections.experience}</h2>
           {
             resumeData.experience.map((entry) => (
               <article class="dated-entry">
@@ -101,14 +110,14 @@ import { resumeData } from "../data/resumeData";
       <section class="page page-two">
         <header class="compact-header">
           <div>
-            <p class="eyebrow">Selected Work</p>
-            <h1>Apps, tools, and practice</h1>
+            <p class="eyebrow">{content.selectedWork}</p>
+            <h1>{content.selectedWorkTitle}</h1>
           </div>
           <p class="page-name">{resumeData.name}</p>
         </header>
 
         <section>
-          <h2>App Projects</h2>
+          <h2>{content.sections.projects}</h2>
           <div class="project-list">
             {
               resumeData.projects.map((project) => (
@@ -122,7 +131,7 @@ import { resumeData } from "../data/resumeData";
         </section>
 
         <section>
-          <h2>Skills</h2>
+          <h2>{content.sections.skills}</h2>
           <div class="skills">
             {
               resumeData.skills.map((skill) => (
@@ -136,22 +145,22 @@ import { resumeData } from "../data/resumeData";
         </section>
 
         <section class="closing">
-          <h2>Contact</h2>
+          <h2>{content.sections.contact}</h2>
           <div class="contact-grid">
             <div>
-              <span>Email</span>
+              <span>{content.labels.email}</span>
               <a href={`mailto:${resumeData.contact.email}`}>
                 {resumeData.contact.email}
               </a>
             </div>
             <div>
-              <span>GitHub</span>
+              <span>{content.labels.github}</span>
               <a href={resumeData.contact.githubUrl}>
                 {resumeData.contact.githubLabel}
               </a>
             </div>
             <div>
-              <span>WeChat</span>
+              <span>{content.labels.wechat}</span>
               <strong>{resumeData.contact.wechat}</strong>
             </div>
           </div>
@@ -171,6 +180,16 @@ import { resumeData } from "../data/resumeData";
     font-family: "EB Garamond Variable", Garamond, serif;
     color: #171717;
     background: #e8e6e1;
+  }
+
+  html[lang="ja"] {
+    font-family: "EB Garamond Variable", "Shippori Mincho", "Yu Mincho",
+      "Hiragino Mincho ProN", serif;
+    font-feature-settings:
+      "palt" 1,
+      "pkna" 1;
+    line-break: strict;
+    overflow-wrap: anywhere;
   }
 
   * {
@@ -236,6 +255,32 @@ import { resumeData } from "../data/resumeData";
   .contact-grid span,
   .page-name {
     font-family: "Inter Variable", sans-serif;
+  }
+
+  html[lang="ja"] .eyebrow,
+  html[lang="ja"] .subtitle,
+  html[lang="ja"] .contact,
+  html[lang="ja"] time,
+  html[lang="ja"] .meta,
+  html[lang="ja"] .contact-grid span,
+  html[lang="ja"] .page-name,
+  html[lang="ja"] .skills p {
+    font-family: "Inter Variable", "Noto Sans JP", "Hiragino Sans",
+      "Yu Gothic", sans-serif;
+  }
+
+  html[lang="ja"] h1 {
+    letter-spacing: 0.02em;
+    line-height: 1.16;
+  }
+
+  html[lang="ja"] h2,
+  html[lang="ja"] h3 {
+    letter-spacing: 0.025em;
+  }
+
+  html[lang="ja"] p {
+    line-height: 1.52;
   }
 
   .eyebrow {

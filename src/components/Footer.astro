@@ -1,33 +1,47 @@
 ---
-// Component: src/components/Footer.astro
+import {
+  localizedPath,
+  siteContent,
+  type Locale,
+} from "../i18n";
+
+interface Props {
+  locale: Locale;
+  currentPath: string;
+}
+
+const { locale, currentPath } = Astro.props;
+const content = siteContent[locale].footer;
 const currentYear = new Date().getFullYear();
+const englishPath = localizedPath("en", currentPath);
+const japanesePath = localizedPath("ja", currentPath);
 ---
 
 <footer class="site-footer">
   <div class="footer-content">
     <div class="footer-column footer-column-1">
-      <h4>About</h4>
+      <h4>{content.about}</h4>
       <a href="https://icp.gov.moe/?keyword=20220698" target="_blank">MOE ICP No.20220698</a>
       <p class="footer-description">
-        Build by Calvin with ❤️
+        {content.builtBy}
       </p>
-      <p class="copyright">&copy; {currentYear} CalvinLee. All rights reserved.</p>
+      <p class="copyright">&copy; {currentYear} CalvinLee. {content.copyright}</p>
     </div>
     <div class="footer-column footer-column-2">
-      <h4>Links</h4>
+      <h4>{content.links}</h4>
       <ul>
-        <li><a href="/" data-astro-prefetch>Home</a></li>
-        <li><a href="/resume" data-astro-prefetch>Résumé</a></li>
-        <li><a href="/contact" data-astro-prefetch>Contact</a></li>
+        <li><a href={localizedPath(locale, "/")} data-astro-prefetch>{content.home}</a></li>
+        <li><a href={localizedPath(locale, "/resume")} data-astro-prefetch>{content.resume}</a></li>
+        <li><a href={localizedPath(locale, "/contact")} data-astro-prefetch>{content.contact}</a></li>
       </ul>
     </div>
     <div class="footer-column footer-column-3">
-      <h4>Connect</h4>
+      <h4>{content.connect}</h4>
       <ul>
         <li>
           <a
             class="link"
-            href="/contact">WeChat</a
+            href={localizedPath(locale, "/contact")}>WeChat</a
           >
         </li>
         <li>
@@ -40,8 +54,48 @@ const currentYear = new Date().getFullYear();
         </li>
       </ul>
     </div>
+    <div class="footer-column footer-column-4">
+      <h4>{content.language}</h4>
+      <ul class="language-list" aria-label={content.languageLabel}>
+        <li>
+          {
+            locale === "en" ? (
+              <span aria-current="true">English</span>
+            ) : (
+              <a href={englishPath} data-language="en">English</a>
+            )
+          }
+        </li>
+        <li>
+          {
+            locale === "ja" ? (
+              <span aria-current="true">日本語</span>
+            ) : (
+              <a href={japanesePath} data-language="ja">日本語</a>
+            )
+          }
+        </li>
+      </ul>
+    </div>
   </div>
 </footer>
+
+<script>
+  function initializeLanguageLinks() {
+    document.querySelectorAll<HTMLAnchorElement>("[data-language]").forEach((link) => {
+      link.addEventListener("click", () => {
+        try {
+          window.localStorage.setItem(
+            "calvin-site-language",
+            link.dataset.language || "en"
+          );
+        } catch {}
+      });
+    });
+  }
+
+  document.addEventListener("astro:page-load", initializeLanguageLinks);
+</script>
 
 <style>
   .site-footer {
@@ -90,7 +144,8 @@ const currentYear = new Date().getFullYear();
     flex-basis: 100%;
   }
   .footer-column-2,
-  .footer-column-3 {
+  .footer-column-3,
+  .footer-column-4 {
     flex: 1;
   }
 
@@ -125,6 +180,11 @@ const currentYear = new Date().getFullYear();
     text-decoration: underline;
   }
 
+  .language-list span[aria-current="true"] {
+    color: var(--footer-heading);
+    font-weight: 600;
+  }
+
   .footer-column p.copyright {
     margin-top: 2em;
     font-size: 0.8rem;
@@ -150,7 +210,8 @@ const currentYear = new Date().getFullYear();
       flex: 4 1 0%;
     }
     .footer-column-2,
-    .footer-column-3 {
+    .footer-column-3,
+    .footer-column-4 {
       flex: 1 1 0%;
     }
 

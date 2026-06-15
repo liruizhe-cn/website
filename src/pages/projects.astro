@@ -1,9 +1,11 @@
 ---
 import SubPageLayout from "../layouts/SubPageLayout.astro";
 import ProjectCard from "../components/projects/ProjectCard.astro";
-import { allProjectsData } from "../data/projectsData";
+import { getLocaleFromPath, getProjects, siteContent } from "../i18n";
 
-const projects = allProjectsData;
+const locale = getLocaleFromPath(Astro.url.pathname);
+const content = siteContent[locale].projects;
+const projects = getProjects(locale);
 
 function slugify(text: string): string {
   return text
@@ -17,10 +19,9 @@ function slugify(text: string): string {
 }
 ---
 
-<SubPageLayout title="Projects">
+<SubPageLayout title={content.title} description={content.description}>
   <p class="page-intro">
-    Here are some of the projects I've worked on. You can find more details and
-    other experiments on my GitHub profiles.
+    {content.intro}
   </p>
   <div class="projects-grid">
     {
@@ -37,6 +38,7 @@ function slugify(text: string): string {
             projectUrl={project.projectUrl}
             githubRepos={project.githubRepos}
             techStack={project.techStack}
+            locale={locale}
           >
             <div set:html={project.description} />
           </ProjectCard>

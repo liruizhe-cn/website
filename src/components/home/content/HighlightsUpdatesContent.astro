@@ -1,12 +1,18 @@
 ---
-import {
-  allTimelineEvents,
-  type TimelineEventItem,
-} from "../../../data/timelineEvents";
+import type { TimelineEventItem } from "../../../data/timelineEvents";
 import Button from "../../common/Button.astro";
+import {
+  formatMonth,
+  getLocaleFromPath,
+  getTimeline,
+  localizedPath,
+  siteContent,
+} from "../../../i18n";
 const numberOfHighlightsToShow = 3;
+const locale = getLocaleFromPath(Astro.url.pathname);
+const content = siteContent[locale].home;
 
-const allHighlights: TimelineEventItem[] = allTimelineEvents.filter(
+const allHighlights: TimelineEventItem[] = getTimeline(locale).filter(
   (event) => event.isHighlight
 );
 allHighlights.sort(
@@ -17,21 +23,9 @@ const highlightsToShow: TimelineEventItem[] = allHighlights.slice(
   numberOfHighlightsToShow
 );
 
-const timelineUrl = "/timeline";
+const timelineUrl = localizedPath(locale, "/timeline");
 function formatEventDate(dateStr: string): string {
-  if (!dateStr) return "";
-  try {
-    const [year, month] = dateStr.split("-").map(Number);
-    const date = new Date(Date.UTC(year, month - 1));
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      timeZone: "UTC",
-    });
-  } catch (e) {
-    console.error(`Error parsing date string "${dateStr}":`, e);
-    return dateStr;
-  }
+  return formatMonth(locale, dateStr);
 }
 ---
 
@@ -39,7 +33,7 @@ function formatEventDate(dateStr: string): string {
   slot="title"
   class="about-title scroll-target-title scroll-reveal-animate"
 >
-  Highlights & Updates
+  {content.highlightsTitle}
 </h2>
 
 <div class="about-content scroll-target-content scroll-reveal-animate">
@@ -71,7 +65,7 @@ function formatEventDate(dateStr: string): string {
         ))}
       </ul>
     ) : (
-      <p>No recent highlights available. Check back soon!</p> // Fallback message
+      <p>{content.highlightsEmpty}</p>
     )
   }
 
@@ -79,7 +73,7 @@ function formatEventDate(dateStr: string): string {
     <Button
       class="button"
       href={timelineUrl}
-      text="Explore My Journey"
+      text={content.highlightsCta}
       wrapperClass="cta-link"
     />
   </div>

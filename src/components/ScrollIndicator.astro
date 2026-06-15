@@ -1,8 +1,21 @@
 ---
-// Component: src/components/ScrollIndicator.astro
+import type { Locale } from "../i18n";
+import { siteContent } from "../i18n";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const label = siteContent[locale].accessibility.scrollDown;
 ---
 
-<div id="scroll-indicator" class="scroll-indicator">
+<button
+  id="scroll-indicator"
+  class="scroll-indicator"
+  type="button"
+  aria-label={label}
+>
   <div class="indicator-content">
     <svg
       width="32"
@@ -19,7 +32,7 @@
         stroke-linejoin="round"></path>
     </svg>
   </div>
-</div>
+</button>
 
 <style>
   @keyframes float {
@@ -42,6 +55,9 @@
     color: var(--text-color);
     opacity: 0;
     cursor: pointer;
+    border: 0;
+    padding: 0;
+    background: transparent;
     z-index: 10;
     transition: opacity 0.5s ease-out;
   }

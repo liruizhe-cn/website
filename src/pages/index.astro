@@ -7,9 +7,13 @@ import FocusStrengthsContent from "../components/home/content/FocusStrengthsCont
 import FeaturedWorksContent from "../components/home/content/FeaturedWorksContent.astro";
 import HighlightsUpdatesContent from "../components/home/content/HighlightsUpdatesContent.astro";
 import ConnectContent from "../components/home/content/ConnectContent.astro";
+import { getLocaleFromPath, siteContent } from "../i18n";
+
+const locale = getLocaleFromPath(Astro.url.pathname);
+const content = siteContent[locale];
 ---
 
-<Layout title="Homepage">
+<Layout title={content.home.title} description={content.meta.description}>
   <main class="homepage-content">
     <Hero />
 

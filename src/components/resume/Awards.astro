@@ -1,9 +1,13 @@
 ---
-import { resumeData } from "../../data/resumeData";
+import { getLocaleFromPath, getResumeData, siteContent } from "../../i18n";
+
+const locale = getLocaleFromPath(Astro.url.pathname);
+const resumeData = getResumeData(locale);
+const labels = siteContent[locale].resume;
 ---
 
 <section class="resume-section scroll-reveal-animate">
-  <h2>Honors & Awards</h2>
+  <h2>{labels.sections.awards}</h2>
   {
     resumeData.awards.map((award) => (
       <div class="award-entry">
@@ -15,7 +19,7 @@ import { resumeData } from "../../data/resumeData";
             )}
             {"work" in award && award.work && (
               <span class="award-work">
-                Work:{" "}
+                {labels.work}:{" "}
                 <a
                   href={award.work.url}
                   target="_blank"

@@ -1,19 +1,19 @@
 ---
 import SubPageLayout from "../layouts/SubPageLayout.astro";
 import { Icon } from "astro-icon/components";
+import { getLocaleFromPath, siteContent } from "../i18n";
+
+const locale = getLocaleFromPath(Astro.url.pathname);
+const content = siteContent[locale].contact;
 ---
 
-<SubPageLayout title="Contact">
+<SubPageLayout title={content.title} description={content.description}>
   <div class="contact-content">
-    <p class="intro-text">Feel free to reach out!</p>
-    <p class="intro-text">
-      Here are the main ways to reach me or find my work.
-    </p>
+    {content.intro.map((paragraph) => <p class="intro-text">{paragraph}</p>)}
 
-    <h3 class="contact-section-title">Contact Information</h3>
+    <h3 class="contact-section-title">{content.sectionTitle}</h3>
     <p class="section-description">
-      Feel free to reach out about projects, photography, language learning, or
-      collaboration ideas.
+      {content.sectionDescription}
     </p>
     <ul class="contact-list">
       <li>

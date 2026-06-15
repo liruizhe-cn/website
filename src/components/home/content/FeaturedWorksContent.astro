@@ -1,15 +1,20 @@
 ---
-import {
-  allProjectsData,
-  type ProjectDataItem,
-} from "../../../data/projectsData";
+import type { ProjectDataItem } from "../../../data/projectsData";
 import FeaturedProjectCard from "../FeaturedProjectCard.astro"; // Import the new card component
 import Button from "../../common/Button.astro";
+import {
+  getLocaleFromPath,
+  getProjects,
+  localizedPath,
+  siteContent,
+} from "../../../i18n";
 
-const featuredProjects: ProjectDataItem[] = allProjectsData.filter(
+const locale = getLocaleFromPath(Astro.url.pathname);
+const content = siteContent[locale].home;
+const featuredProjects: ProjectDataItem[] = getProjects(locale).filter(
   (project) => project.isFeatured
 );
-const projectsUrl = "/projects";
+const projectsUrl = localizedPath(locale, "/projects");
 
 function slugify(text: string): string {
   return text
@@ -27,7 +32,7 @@ function slugify(text: string): string {
   slot="title"
   class="about-title scroll-target-title scroll-reveal-animate"
 >
-  Featured Works
+  {content.featuredTitle}
 </h2>
 
 <div
@@ -43,6 +48,7 @@ function slugify(text: string): string {
           imageAlt={project.imageAlt}
           githubUrl={project.githubUrl}
           slug={slug}
+          locale={locale}
         />
       );
     })
@@ -52,7 +58,7 @@ function slugify(text: string): string {
     <Button
       class="button"
       href={projectsUrl}
-      text="Discover More Projects"
+      text={content.featuredCta}
       wrapperClass="projects-cta-button"
     />
   </div>

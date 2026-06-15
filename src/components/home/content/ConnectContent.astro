@@ -1,27 +1,27 @@
 ---
 import Button from "../../common/Button.astro";
 import { Icon } from "astro-icon/components";
+import {
+  getLocaleFromPath,
+  localizedPath,
+  siteContent,
+} from "../../../i18n";
 
-const contactUrl = "/contact";
+const locale = getLocaleFromPath(Astro.url.pathname);
+const content = siteContent[locale];
+const contactUrl = localizedPath(locale, "/contact");
 ---
 
-<h2 slot="title" class="about-title scroll-reveal-animate">Keep in touch</h2>
+<h2 slot="title" class="about-title scroll-reveal-animate">{content.home.connectTitle}</h2>
 
 <div class="about-content scroll-reveal-animate">
-  <p>
-    Feel free to reach out about app projects, photography, language learning,
-    creative production, or an idea that may be worth exploring together.
-  </p>
-  <p>
-    Email and GitHub are the simplest ways to find my work or start a
-    conversation.
-  </p>
+  {content.home.connectParagraphs.map((paragraph) => <p>{paragraph}</p>)}
 
   <div class="connect-icon-links">
     <a
       href="mailto:clium@yahoo.com"
-      title="Email"
-      aria-label="Email"
+      title={content.accessibility.email}
+      aria-label={content.accessibility.email}
     >
       <Icon name="ri:mail-line" size={24} aria-hidden="true" />
     </a>
@@ -29,8 +29,8 @@ const contactUrl = "/contact";
       href="https://github.com/liruizhe-cn"
       target="_blank"
       rel="noopener noreferrer"
-      title="GitHub Profile"
-      aria-label="GitHub"
+      title={content.accessibility.github}
+      aria-label={content.accessibility.github}
     >
       <Icon name="ri:github-line" size={22} aria-hidden="true" />
     </a>
@@ -40,7 +40,7 @@ const contactUrl = "/contact";
     <Button
       class="button"
       href={contactUrl}
-      text="See All Contact Info"
+      text={content.home.contactCta}
       wrapperClass="cta-link"
     />
   </div>

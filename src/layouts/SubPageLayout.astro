@@ -1,19 +1,31 @@
 ---
 import Layout from "./Layout.astro";
 import { Icon } from "astro-icon/components";
+import {
+  getLocaleFromPath,
+  localizedPath,
+  siteContent,
+} from "../i18n";
 
 interface Props {
   title: string;
+  description?: string;
 }
 
-const { title } = Astro.props;
+const { title, description } = Astro.props;
+const locale = getLocaleFromPath(Astro.url.pathname);
+const content = siteContent[locale];
 ---
 
-<Layout title={title} showIndicatorOverride={false}>
+<Layout title={title} description={description} showIndicatorOverride={false}>
   <main class="subpage-main">
     <div class="subpage-header">
       <span class="back-link-wrapper page-load-initial-state">
-        <a href="/" class="back-link">
+        <a
+          href={localizedPath(locale, "/")}
+          class="back-link"
+          aria-label={content.accessibility.backHome}
+        >
           <Icon name="ri:arrow-left-line" class="back-link-icon" />
         </a>
       </span>

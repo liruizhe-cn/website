@@ -2,6 +2,7 @@
 // src/components/home/FeaturedProjectCard.astro
 
 import { Icon } from "astro-icon/components";
+import { localizedPath, type Locale } from "../../i18n";
 
 interface Props {
   title: string;
@@ -9,17 +10,19 @@ interface Props {
   homepageSummary?: string; // Use concise summary
   githubUrl?: string;
   slug: string; // Slug for linking to the project page
+  locale: Locale;
 }
 
 const {
   title,
   homepageSummary = "Click to learn more...", // Default summary
   slug,
+  locale,
 } = Astro.props;
 
 const githubUrl = undefined;
 
-const projectUrl = `/projects?scrollTo=${slug}`;
+const projectUrl = `${localizedPath(locale, "/projects")}?scrollTo=${slug}`;
 ---
 
 <a href={projectUrl} class="featured-project-card">
