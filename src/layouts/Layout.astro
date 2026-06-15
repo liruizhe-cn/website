@@ -54,6 +54,8 @@ const showScrollIndicator =
           "slate",
           "apricot",
           "iris",
+          "garnet",
+          "glacier",
         ];
         let current = "";
         let previous = "";
@@ -355,16 +357,10 @@ const showScrollIndicator =
         const isHomepage =
           window.location.pathname === "/" ||
           window.location.pathname === "/index.html";
-        const desktopScrollQuery = window.matchMedia(
-          "(min-width: 768px) and (pointer: fine)"
-        );
         const reducedMotionQuery = window.matchMedia(
           "(prefers-reduced-motion: reduce)"
         );
         let snapPositions: number[] = [];
-        let gestureLocked = false;
-        let gestureTimer = 0;
-        let animationUntil = 0;
 
         const calculateSnapPositions = () => {
           if (!isHomepage) {
@@ -421,41 +417,14 @@ const showScrollIndicator =
             snapPositions.length - 1,
             Math.max(0, nearestSnapIndex() + direction)
           );
-          animationUntil = Date.now() + (reducedMotionQuery.matches ? 0 : 650);
           pageWrapper.scrollTo({
             top: snapPositions[nextIndex],
             behavior: reducedMotionQuery.matches ? "auto" : "smooth",
           });
         };
 
-        const releaseGesture = () => {
-          window.clearTimeout(gestureTimer);
-          const remainingAnimation = animationUntil - Date.now();
-          gestureTimer = window.setTimeout(
-            () => {
-              gestureLocked = false;
-            },
-            Math.max(160, remainingAnimation)
-          );
-        };
-
         if (isHomepage) {
           calculateSnapPositions();
-          pageWrapper.addEventListener(
-            "wheel",
-            (event) => {
-              if (!desktopScrollQuery.matches || event.ctrlKey) return;
-              if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
-
-              event.preventDefault();
-              if (!gestureLocked && Math.abs(event.deltaY) >= 2) {
-                gestureLocked = true;
-                moveBySection(event.deltaY > 0 ? 1 : -1);
-              }
-              releaseGesture();
-            },
-            { passive: false, signal }
-          );
           window.addEventListener("resize", calculateSnapPositions, { signal });
         }
 
@@ -514,7 +483,7 @@ const showScrollIndicator =
             "click",
             () => {
               clearTimeout(revealTimer);
-              if (isHomepage && desktopScrollQuery.matches) {
+              if (isHomepage) {
                 moveBySection(1);
               } else {
                 pageWrapper.scrollTo({
