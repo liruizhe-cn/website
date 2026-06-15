@@ -310,39 +310,34 @@
   .aurora-field,
   .aurora {
     position: absolute;
+    will-change: transform;
     transform: translateZ(0);
   }
 
   .aurora-field {
-    inset: -28%;
+    inset: -18%;
     background:
-      radial-gradient(
-        circle at 48% 38%,
-        color-mix(in oklch, var(--aurora-secondary) 74%, transparent),
-        transparent 52%
-      ),
-      radial-gradient(
-        circle at 58% 68%,
-        color-mix(in oklch, var(--aurora-primary) 72%, transparent),
-        transparent 54%
-      ),
+      radial-gradient(circle at 48% 38%, var(--aurora-secondary), transparent 46%),
+      radial-gradient(circle at 58% 68%, var(--aurora-primary), transparent 48%),
       conic-gradient(
         from 25deg at 50% 50%,
-        color-mix(in oklch, var(--aurora-primary) 52%, transparent),
-        color-mix(in oklch, var(--aurora-secondary) 58%, transparent),
-        color-mix(in oklch, var(--aurora-secondary) 44%, var(--aurora-surface)),
-        color-mix(in oklch, var(--aurora-accent) 24%, transparent),
-        color-mix(in oklch, var(--aurora-primary) 52%, transparent)
+        color-mix(in oklch, var(--aurora-primary) 76%, transparent),
+        color-mix(in oklch, var(--aurora-secondary) 82%, transparent),
+        color-mix(in oklch, var(--aurora-secondary) 70%, var(--aurora-surface)),
+        color-mix(in oklch, var(--aurora-accent) 38%, transparent),
+        color-mix(in oklch, var(--aurora-primary) 76%, transparent)
       );
+    filter: blur(10vmax);
     opacity: var(--aurora-field-opacity);
     mix-blend-mode: var(--aurora-field-blend);
-    animation: field-flow 30s ease-in-out infinite alternate;
+    animation: field-flow 18s ease-in-out infinite alternate;
   }
 
   .aurora {
-    width: 76vmax;
-    height: 64vmax;
+    width: 64vmax;
+    height: 52vmax;
     border-radius: 44% 56% 62% 38%;
+    filter: blur(8vmax) saturate(118%);
     mix-blend-mode: var(--aurora-blend);
   }
 
@@ -351,12 +346,12 @@
     left: -4%;
     background: radial-gradient(
       ellipse at center,
-      color-mix(in oklch, var(--aurora-primary) 90%, transparent) 0%,
-      color-mix(in oklch, var(--aurora-primary) 44%, var(--aurora-surface)) 42%,
-      transparent 76%
+      var(--aurora-primary) 0%,
+      color-mix(in oklch, var(--aurora-primary) 66%, var(--aurora-surface)) 46%,
+      transparent 73%
     );
     opacity: var(--aurora-primary-opacity);
-    animation: drift-mint 26s ease-in-out infinite alternate;
+    animation: drift-mint 16s ease-in-out infinite alternate;
   }
 
   .aurora-violet {
@@ -364,27 +359,27 @@
     right: -8%;
     background: radial-gradient(
       ellipse at center,
-      color-mix(in oklch, var(--aurora-secondary) 90%, transparent) 0%,
-      color-mix(in oklch, var(--aurora-secondary) 44%, var(--aurora-surface)) 44%,
-      transparent 77%
+      var(--aurora-secondary) 0%,
+      color-mix(in oklch, var(--aurora-secondary) 66%, var(--aurora-surface)) 48%,
+      transparent 74%
     );
     opacity: var(--aurora-secondary-opacity);
-    animation: drift-violet 32s ease-in-out infinite alternate;
+    animation: drift-violet 19s ease-in-out infinite alternate;
   }
 
   .aurora-gold {
     right: 8%;
     bottom: -12%;
-    width: 56vmax;
-    height: 50vmax;
+    width: 48vmax;
+    height: 42vmax;
     background: radial-gradient(
       ellipse at center,
-      color-mix(in oklch, var(--aurora-accent) 86%, transparent) 0%,
-      color-mix(in oklch, var(--aurora-accent) 36%, transparent) 40%,
-      transparent 75%
+      var(--aurora-accent) 0%,
+      color-mix(in oklch, var(--aurora-accent) 54%, transparent) 42%,
+      transparent 72%
     );
     opacity: var(--aurora-accent-opacity);
-    animation: drift-gold 36s ease-in-out infinite alternate;
+    animation: drift-gold 22s ease-in-out infinite alternate;
   }
 
   .ambient-grain {
@@ -400,13 +395,6 @@
   :global(html.dark) .ambient-grain {
     opacity: 0.07;
     mix-blend-mode: overlay;
-  }
-
-  @media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
-    .aurora-field,
-    .aurora {
-      will-change: transform;
-    }
   }
 
   @keyframes field-flow {
@@ -447,33 +435,23 @@
 
   @media (max-width: 767px) {
     #dynamic-background-container {
-      inset: -12vmax;
+      inset: -18vmax;
     }
 
     .aurora {
-      width: 92vmax;
-      height: 76vmax;
-      animation: none;
-      mix-blend-mode: normal;
+      width: 76vmax;
+      height: 62vmax;
+      filter: blur(11vmax) saturate(114%);
+      animation-duration: 26s;
     }
 
     .aurora-field {
-      display: none;
+      inset: -26%;
+      filter: blur(13vmax) saturate(112%);
+      animation-duration: 22s;
     }
 
     .aurora-gold {
-      display: none;
-    }
-
-    .aurora-mint {
-      transform: translate3d(-16%, -8%, 0) scale(1.08);
-    }
-
-    .aurora-violet {
-      transform: translate3d(20%, 26%, 0) scale(1.02);
-    }
-
-    .ambient-grain {
       display: none;
     }
   }
