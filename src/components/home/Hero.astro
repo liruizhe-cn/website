@@ -18,9 +18,9 @@ const content = siteContent[locale].home;
 <style>
   @keyframes heroReveal {
     to {
-      filter: blur(0px);
       opacity: 0.9;
       transform: translateY(0);
+      will-change: auto;
     }
   }
 
@@ -40,10 +40,9 @@ const content = siteContent[locale].home;
 
   .hero-reveal {
     opacity: 0;
-    filter: blur(5px);
-    transform: translateY(20px);
-    will-change: opacity, filter, transform;
-    animation: heroReveal 0.8s ease-out forwards;
+    transform: translateY(16px);
+    will-change: opacity, transform;
+    animation: heroReveal 0.7s ease-out forwards;
   }
 
   :global(html.is-page-entering) .hero-reveal {
@@ -88,8 +87,8 @@ const content = siteContent[locale].home;
   @media (prefers-reduced-motion: reduce) {
     .hero-reveal {
       opacity: 0.9;
-      filter: none;
       transform: none;
+      will-change: auto;
       animation: none;
     }
   }
