@@ -149,7 +149,7 @@ export const siteContent = {
     },
     footer: {
       about: "About",
-      builtBy: "Built by Calvin with care.",
+      builtBy: "Build by Calvin with ❤️",
       copyright: "All rights reserved.",
       links: "Links",
       home: "Home",
@@ -168,23 +168,23 @@ export const siteContent = {
   },
   ja: {
     meta: {
-      defaultTitle: "私について",
+      defaultTitle: "I AM",
       description:
         "写真、言語学習、個人アプリ開発を中心に、Calvin Leeの活動と制作を紹介する個人サイトです。",
     },
     home: {
-      title: "ホーム",
+      title: "Homepage",
       greeting: "はじめまして",
       name: "Calvin Lee",
       description:
         "南通大学で日本語を専攻しながら、写真、言語学習、ピアノ、個人アプリ開発に取り組んでいます。",
-      aboutTitle: "私について",
+      aboutTitle: "About me",
       aboutParagraphs: [
         "撮れなかった一枚、別の言語で出会った一文、日々の小さな使いにくさ、まだ存在しない道具。制作のきっかけは、いつも身近な気づきから生まれます。",
         "そうした気づきを、写真や文章、小さなデジタルプロダクトへと形にしています。写真、言語、音楽、アプリデザインは、物事を丁寧に見つめ、考えを確かな形へ変えていくための異なる方法です。",
       ],
       resumeCta: "経歴を見る",
-      focusTitle: "関心と得意分野",
+      focusTitle: "Focus & Strengths",
       focusAreas: [
         {
           title: "写真と視覚的な観察",
@@ -207,7 +207,7 @@ export const siteContent = {
             "散らばったアイデアを整理し、イベント資料、映像台本、プレゼンテーション、進行表、企画書、ビジュアルプロンプトなどの形にまとめています。",
         },
       ],
-      connectTitle: "つながる",
+      connectTitle: "Keep in touch",
       connectParagraphs: [
         "アプリ、写真、言語学習、クリエイティブ制作、あるいは一緒に考えてみたいアイデアがありましたら、どうぞ気軽にご連絡ください。",
         "制作物をご覧いただく場合も、会話を始める場合も、EmailとGitHubが最も分かりやすい窓口です。",
@@ -220,7 +220,7 @@ export const siteContent = {
       highlightsCta: "これまでの歩みを見る",
     },
     projects: {
-      title: "プロジェクト",
+      title: "Projects",
       description:
         "Calvin Leeが手がけたプロジェクト、試作、デジタルツールを紹介します。",
       intro:
@@ -229,10 +229,10 @@ export const siteContent = {
       sourceTitle: "GitHubでソースを見る",
       repositoryTitle: (name: string) => `${name}をGitHubで見る`,
       liveTitle: "公開サイトを見る",
-      liveLabel: "公開サイト",
+      liveLabel: "Live Site",
     },
     timeline: {
-      title: "タイムライン",
+      title: "Timeline",
       description: "主な経験、受賞、発表を時系列で紹介します。",
       all: "すべて",
       newest: "新しい順",
@@ -244,7 +244,7 @@ export const siteContent = {
       },
     },
     contact: {
-      title: "連絡先",
+      title: "Contact",
       description:
         "アプリ、写真、言語学習、クリエイティブ制作についてCalvin Leeへご連絡いただけます。",
       intro: ["どうぞ気軽にご連絡ください。", "主な連絡先と制作物をご覧いただける場所をまとめています。"],
@@ -253,7 +253,7 @@ export const siteContent = {
         "プロジェクト、写真、言語学習、共同制作のアイデアなどについて、お気軽にお声がけください。",
     },
     resume: {
-      title: "経歴",
+      title: "Résumé",
       description:
         "Calvin Leeのプロフィール、学歴、受賞歴、アプリ制作、スキル、連絡先を掲載しています。",
       download: "日本語版PDFをダウンロード",
@@ -274,15 +274,15 @@ export const siteContent = {
       labels: { email: "Email", github: "GitHub", wechat: "WeChat" },
     },
     footer: {
-      about: "このサイトについて",
-      builtBy: "Calvinが丁寧につくっています。",
+      about: "About",
+      builtBy: "Build by Calvin with ❤️",
       copyright: "All rights reserved.",
-      links: "ページ",
-      home: "ホーム",
-      resume: "経歴",
-      contact: "連絡先",
-      connect: "つながる",
-      language: "言語",
+      links: "Links",
+      home: "Home",
+      resume: "Résumé",
+      contact: "Contact",
+      connect: "Connect",
+      language: "Language",
       languageLabel: "サイトの言語を選択",
     },
     accessibility: {
